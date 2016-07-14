@@ -53,6 +53,16 @@ std::string to_hex(const unsigned char* buf, size_t len) {
     return res;
 }
 
+/**
+ * Converts specified string with binary data into hex format
+ * 
+ * @param data string with binary data
+ * @return data in hex format
+ */
+std::string to_hex(const std::string& data) {
+    return to_hex(reinterpret_cast<const unsigned char*> (data.c_str()), data.length());
+}
+
 } // namespace
 }
 
