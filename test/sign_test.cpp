@@ -11,6 +11,7 @@
 #include <cstring>
 #include <iostream>
 #include <memory>
+#include <string>
 
 #include <openssl/bio.h>
 #include <openssl/evp.h>
@@ -63,12 +64,15 @@ public:
 using byte = unsigned char;
 
 std::unique_ptr<EVP_PKEY, EVP_PKEY_Deleter> load_private_key() {
-    auto key = std::unique_ptr<EVP_PKEY, EVP_PKEY_Deleter>(EVP_PKEY_new(), EVP_PKEY_Deleter());
     auto bio = std::unique_ptr<BIO, BIO_Deleter>(BIO_new(BIO_s_file()), BIO_Deleter());
-    auto ret = BIO_read_filename(bio.get(), "../test/certificate/test_nopwd.key");
+    auto ret = BIO_read_filename(bio.get(), "../test/certificate/test.key");
     slassert(1 == ret);
-    auto ptrtmp = key.get();
-    PEM_read_bio_PrivateKey(bio.get(), std::addressof(ptrtmp), nullptr, nullptr);
+    std::string pwd = "test";
+    void* pwdvoid = static_cast<void*> (std::addressof(pwd.front()));
+    auto key = std::unique_ptr<EVP_PKEY, EVP_PKEY_Deleter>(
+        PEM_read_bio_PrivateKey(bio.get(), nullptr, nullptr, pwdvoid),
+                EVP_PKEY_Deleter());
+    slassert(nullptr != key.get());
     return key;
 }
 
@@ -141,7 +145,7 @@ int main() {
     std::unique_ptr<EVP_PKEY, EVP_PKEY_Deleter> skey = load_private_key();
     std::unique_ptr<EVP_PKEY, EVP_PKEY_Deleter> vkey = load_public_key();
 
-    std::string msg = "Now is the time for all good men to come to the aide of their country";
+    std::string msg = "foo bar baz";
 
     std::string sig = sign_it(msg, skey.get(), "SHA256");
 

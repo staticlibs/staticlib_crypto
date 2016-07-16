@@ -52,6 +52,10 @@ class sha256_sink {
      */
     std::unique_ptr<SHA256_CTX> ctx;
     /**
+     * OpenSSL error code
+     */
+    int error;
+    /**
      * Computed hash    
      */
     std::string hash{""};
@@ -65,8 +69,10 @@ public:
      * @param sink destination sink
      */
     sha256_sink(Sink&& sink) :
-    sink(std::move(sink)),
-    ctx(create_ctx()) { }
+    sink(std::move(sink)) {
+        ctx = std::unique_ptr<SHA256_CTX>(new SHA256_CTX);
+        error = SHA256_Init(ctx.get());
+    }
 
     /**
      * Deleted copy constructor
@@ -91,6 +97,7 @@ public:
     sha256_sink(sha256_sink&& other) :
     sink(std::move(other.sink)),
     ctx(std::move(other.ctx)),
+    error(other.error),
     hash(std::move(other.hash)) { }
 
     /**
@@ -102,6 +109,7 @@ public:
     sha256_sink& operator=(sha256_sink&& other) {
         sink = std::move(other.sink);
         ctx = std::move(other.ctx);
+        error = other.error;
         hash = std::move(other.hash);
         return *this;
     }
@@ -114,11 +122,15 @@ public:
      * @return number of bytes processed
      */
     std::streamsize write(const char* buffer, std::streamsize length) {
-        std::streamsize res = sink.write(buffer, length);
-        if (res > 0) {
-            SHA256_Update(ctx.get(), buffer, res);
+        if (1 == error) {
+            std::streamsize res = sink.write(buffer, length);
+            if (res > 0) {
+                SHA256_Update(ctx.get(), buffer, res);
+            }
+            return res;
+        } else {
+            return length;
         }
-        return res;
     }
 
     /**
@@ -126,17 +138,21 @@ public:
      * 
      * @return number of bytes flushed
      */
-    std::streamsize flush() {        
-        return sink.flush();
+    std::streamsize flush() {       
+        if (1 == error) {
+            return sink.flush();
+        } else {
+            return 0;
+        }
     }
 
     /**
-     * Returns number of bytes written through this instance
+     * Returns computed hash sum
      * 
-     * @return number of bytes written through this instance
+     * @return computed hash sum
      */
-    std::string& get_hash() {
-        if (hash.empty()) {
+    const std::string& get_hash() {
+        if (1 == error && hash.empty()) {
             std::array<unsigned char, SHA256_DIGEST_LENGTH> buf;
             SHA256_Final(buf.data(), ctx.get());
             hash = to_hex(buf.data(), buf.size());
@@ -152,14 +168,15 @@ public:
     Sink& get_sink() {
         return sink;
     }
-    
-private:
-    static std::unique_ptr<SHA256_CTX> create_ctx() {
-        std::unique_ptr<SHA256_CTX> ctx{new SHA256_CTX};
-        SHA256_Init(ctx.get());
-        return ctx;
-    }
 
+    /**
+     * Whether error happened during processing
+     * 
+     * @return whether error happened during processing
+     */
+    bool is_bogus() {
+        return 1 != error;
+    }
 };
 
 /**

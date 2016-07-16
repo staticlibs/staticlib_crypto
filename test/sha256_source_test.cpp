@@ -33,8 +33,8 @@ namespace io = staticlib::io;
 namespace sc = staticlib::crypto;
 
 void test_hash() {
-    auto src = sc::make_sha256_source(io::string_source{"foo42\n"});
-    io::string_sink sink{};
+    auto src = sc::make_sha256_source(io::string_source("foo42\n"));
+    auto sink = io::string_sink();
     std::array<char, 2> buf;
     io::copy_all(src, sink, buf.data(), buf.size());
 

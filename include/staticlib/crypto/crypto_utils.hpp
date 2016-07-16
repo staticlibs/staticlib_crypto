@@ -29,8 +29,45 @@
 #include <utility>
 #include <cstdint>
 
+#include "openssl/bio.h"
+#include "openssl/evp.h"
+#include "openssl/x509.h"
+
 namespace staticlib {
 namespace crypto {
+
+namespace detail {
+
+class EVP_PKEY_Deleter {
+public:
+    void operator()(EVP_PKEY* key) {
+        EVP_PKEY_free(key);
+    }
+};
+
+class EVP_MD_CTX_Deleter {
+public:
+    void operator()(EVP_MD_CTX* ctx) {
+        EVP_MD_CTX_destroy(ctx);
+    }
+};
+
+class BIO_Deleter {
+public:
+    void operator()(BIO* bio) {
+        BIO_free_all(bio);
+    }
+};
+
+class X509_Deleter {
+public:
+    void operator()(X509* cert) {
+        X509_free(cert);
+    }
+};
+
+
+} // namespace
 
 /**
  * Converts specified buffer into hex format
