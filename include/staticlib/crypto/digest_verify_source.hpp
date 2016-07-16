@@ -165,7 +165,8 @@ public:
             std::streamsize res = src.read(buffer, length);
             if (res > 0) {
                 error = EVP_DigestVerifyUpdate(ctx.get(),
-                        reinterpret_cast<const unsigned char*> (buffer), res);
+                        reinterpret_cast<const unsigned char*> (buffer), 
+                        static_cast<size_t> (res));
             }
             return 1 == error ? res : std::char_traits<char>::eof();
         } else {

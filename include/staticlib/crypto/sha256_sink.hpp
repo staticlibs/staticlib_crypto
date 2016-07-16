@@ -58,7 +58,7 @@ class sha256_sink {
     /**
      * Computed hash    
      */
-    std::string hash{""};
+    std::string hash;
 
 public:
 
@@ -125,7 +125,7 @@ public:
         if (1 == error) {
             std::streamsize res = sink.write(buffer, length);
             if (res > 0) {
-                SHA256_Update(ctx.get(), buffer, res);
+                SHA256_Update(ctx.get(), buffer, static_cast<size_t>(res));
             }
             return res;
         } else {

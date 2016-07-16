@@ -58,7 +58,7 @@ class sha256_source {
     /**
      * Computed hash    
      */
-    std::string hash{""};
+    std::string hash;
 
 public:
     /**
@@ -124,7 +124,7 @@ public:
         if (1 == error) {
             std::streamsize res = src.read(buffer, length);
             if (res > 0) {
-                error = SHA256_Update(ctx.get(), buffer, res);
+                error = SHA256_Update(ctx.get(), buffer, static_cast<size_t>(res));
             }
             return 1 == error ? res : std::char_traits<char>::eof();
         } else {
