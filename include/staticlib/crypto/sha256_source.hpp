@@ -39,7 +39,7 @@ namespace staticlib {
 namespace crypto {
 
 /**
- * Source wrapper that computer SHA-256 hash sum of the data read through it
+ * Source wrapper that computes SHA-256 hash sum of the data read through it
  */
 template<typename Source>
 class sha256_source {

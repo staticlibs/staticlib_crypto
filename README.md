@@ -18,6 +18,12 @@ This project is released under the [Apache License 2.0](http://www.apache.org/li
 Changelog
 ---------
 
+**2016-07-16**
+
+ * version 0.5.1
+ * `digest_sign` and `digest_verify` sources
+
 **2016-02-06**
 
  * version 0.5
+ * `sha256` source and sink

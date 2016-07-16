@@ -15,20 +15,32 @@
  */
 
 /* 
- * File:   crypto.hpp
+ * File:   crypto_utils_test.cpp
  * Author: alex
  *
- * Created on February 6, 2016, 6:44 PM
+ * Created on July 16, 2016, 1:43 PM
  */
 
-#ifndef STATICLIB_CRYPTO_HPP
-#define	STATICLIB_CRYPTO_HPP
-
 #include "staticlib/crypto/crypto_utils.hpp"
-#include "staticlib/crypto/digest_sign_source.hpp"
-#include "staticlib/crypto/digest_verify_source.hpp"
-#include "staticlib/crypto/sha256_sink.hpp"
-#include "staticlib/crypto/sha256_source.hpp"
 
-#endif	/* STATICLIB_CRYPTO_HPP */
+#include <iostream>
 
+#include "staticlib/config/assert.hpp"
+
+namespace sc = staticlib::crypto;
+
+void test_hex() {
+    std::string data = "foo";
+    std::string hex = sc::to_hex(data);
+    slassert(data ==  sc::from_hex(hex));
+}
+
+int main() {
+    try {
+        test_hex();
+    } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
+    return 0;
+}

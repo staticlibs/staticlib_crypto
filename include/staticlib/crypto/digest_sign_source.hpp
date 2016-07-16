@@ -1,3 +1,19 @@
+/*
+ * Copyright 2016, alex at staticlibs.net
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 /* 
  * File:   digest_sign_source.hpp
  * Author: alex
@@ -24,7 +40,7 @@ namespace staticlib {
 namespace crypto {
 
 /**
- * Source wrapper that computer SHA-256 hash sum of the data read through it
+ * Source wrapper that computes digest signature of the data read through it
  */
 template<typename Source>
 class digest_sign_source {
@@ -67,6 +83,7 @@ public:
         }
         error = EVP_DigestInit_ex(ctx.get(), md, nullptr);
         if (1 != error) return;
+        // load key
         auto bio = std::unique_ptr<BIO, detail::BIO_Deleter>(BIO_new(BIO_s_file()), detail::BIO_Deleter());
         error = BIO_read_filename(bio.get(), key_path.c_str());
         if (1 != error) return;
@@ -117,7 +134,7 @@ public:
     digest_sign_source& operator=(digest_sign_source&& other) {
         src = std::move(other.src);
         ctx = std::move(other.ctx);
-        error = std::move(other.error);
+        error = other.error;
         signature = std::move(other.signature);
         return *this;
     }

@@ -27,6 +27,7 @@
 #include <array>
 #include <string>
 #include <utility>
+#include <cerrno>
 #include <cstdint>
 
 #include "openssl/bio.h"
@@ -66,7 +67,6 @@ public:
     }
 };
 
-
 } // namespace
 
 /**
@@ -98,6 +98,37 @@ std::string to_hex(const unsigned char* buf, size_t len) {
  */
 std::string to_hex(const std::string& data) {
     return to_hex(reinterpret_cast<const unsigned char*> (data.c_str()), data.length());
+}
+
+/**
+ * Converts specified string with hex data into binary format
+ * 
+ * @param hex_data string with hex data
+ * @return data in binary format
+ */
+
+std::string from_hex(const std::string& hex_data) {
+    std::string res;
+    std::array<char, 3> buf;
+    buf[2] = '\0';
+    size_t i = 0;
+    if (hex_data.length() > 2 && '0' == hex_data[0] &&
+            ('x' == hex_data[1] || 'X' == hex_data[1])) {
+        i += 2;
+    }
+    for (; i < hex_data.length(); i += 2) {
+        buf[0] = hex_data[i];
+        buf[1] = hex_data[i + 1];
+        char* end = nullptr;
+        errno = 0;
+        char byte = static_cast<char> (strtol(buf.data(), std::addressof(end), 16));
+        if (errno == ERANGE || end != buf.data() + 2) {
+            res = "";
+            break;
+        }
+        res.push_back(byte);
+    }
+    return res;
 }
 
 } // namespace
