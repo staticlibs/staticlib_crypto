@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">staticlib_crypto
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">0.5.1</span>
    </div>
   </td>
  </tr>
@@ -102,7 +102,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab2707b8eec77b695727578015d88fcd2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#ab2707b8eec77b695727578015d88fcd2">sha256_sink</a> (Sink &amp;&amp;sink)</td></tr>
-<tr class="memdesc:ab2707b8eec77b695727578015d88fcd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computed hash.  <a href="#ab2707b8eec77b695727578015d88fcd2"></a><br/></td></tr>
+<tr class="memdesc:ab2707b8eec77b695727578015d88fcd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor, created sink wrapper will own specified sink.  <a href="#ab2707b8eec77b695727578015d88fcd2"></a><br/></td></tr>
 <tr class="memitem:a68bffebf8b23ba50d813eba87ecab034"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#a68bffebf8b23ba50d813eba87ecab034">sha256_sink</a> (const <a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">sha256_sink</a> &amp;)</td></tr>
 <tr class="memdesc:a68bffebf8b23ba50d813eba87ecab034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deleted copy constructor.  <a href="#a68bffebf8b23ba50d813eba87ecab034"></a><br/></td></tr>
 <tr class="memitem:a4d18cb42008e279e1de03b0c1af24604"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">sha256_sink</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#a4d18cb42008e279e1de03b0c1af24604">operator=</a> (const <a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">sha256_sink</a> &amp;)</td></tr>
@@ -115,10 +115,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a069714aac38d6fd0f26b3205c9e3044d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counting write implementation.  <a href="#a069714aac38d6fd0f26b3205c9e3044d"></a><br/></td></tr>
 <tr class="memitem:ab1069973b93fdeedde26c5a8aae2abcc"><td class="memItemLeft" align="right" valign="top">std::streamsize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#ab1069973b93fdeedde26c5a8aae2abcc">flush</a> ()</td></tr>
 <tr class="memdesc:ab1069973b93fdeedde26c5a8aae2abcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flushes destination sink.  <a href="#ab1069973b93fdeedde26c5a8aae2abcc"></a><br/></td></tr>
-<tr class="memitem:a95f6fd41ffbf4442f6a6f9f8fafe45da"><td class="memItemLeft" align="right" valign="top">std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#a95f6fd41ffbf4442f6a6f9f8fafe45da">get_hash</a> ()</td></tr>
-<tr class="memdesc:a95f6fd41ffbf4442f6a6f9f8fafe45da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of bytes written through this instance.  <a href="#a95f6fd41ffbf4442f6a6f9f8fafe45da"></a><br/></td></tr>
+<tr class="memitem:a221587ede713779cb12a98aa3c0ec281"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#a221587ede713779cb12a98aa3c0ec281">get_hash</a> ()</td></tr>
+<tr class="memdesc:a221587ede713779cb12a98aa3c0ec281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns computed hash sum.  <a href="#a221587ede713779cb12a98aa3c0ec281"></a><br/></td></tr>
 <tr class="memitem:af15e86f109091ad98076a849a3517527"><td class="memItemLeft" align="right" valign="top">Sink &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#af15e86f109091ad98076a849a3517527">get_sink</a> ()</td></tr>
 <tr class="memdesc:af15e86f109091ad98076a849a3517527"><td class="mdescLeft">&#160;</td><td class="mdescRight">Underlying sink accessor.  <a href="#af15e86f109091ad98076a849a3517527"></a><br/></td></tr>
+<tr class="memitem:a0dafb02c8c173d1cbfcccdb29edf5720"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#a0dafb02c8c173d1cbfcccdb29edf5720">is_bogus</a> ()</td></tr>
+<tr class="memdesc:a0dafb02c8c173d1cbfcccdb29edf5720"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether error happened during processing.  <a href="#a0dafb02c8c173d1cbfcccdb29edf5720"></a><br/></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename Sink&gt;<br/>
@@ -150,8 +152,7 @@ template&lt;typename Sink &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Computed hash. </p>
-<p>Constructor, created sink wrapper will own specified sink</p>
+<p>Constructor, created sink wrapper will own specified sink. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sink</td><td>destination sink </td></tr>
@@ -250,7 +251,7 @@ template&lt;typename Sink &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a95f6fd41ffbf4442f6a6f9f8fafe45da"></a>
+<a class="anchor" id="a221587ede713779cb12a98aa3c0ec281"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -260,7 +261,7 @@ template&lt;typename Sink &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string&amp; <a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">staticlib::crypto::sha256_sink</a>&lt; Sink &gt;::get_hash </td>
+          <td class="memname">const std::string&amp; <a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">staticlib::crypto::sha256_sink</a>&lt; Sink &gt;::get_hash </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -273,8 +274,8 @@ template&lt;typename Sink &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns number of bytes written through this instance. </p>
-<dl class="section return"><dt>Returns</dt><dd>number of bytes written through this instance </dd></dl>
+<p>Returns computed hash sum. </p>
+<dl class="section return"><dt>Returns</dt><dd>computed hash sum </dd></dl>
 
 </div>
 </div>
@@ -303,6 +304,34 @@ template&lt;typename Sink &gt; </div>
 
 <p>Underlying sink accessor. </p>
 <dl class="section return"><dt>Returns</dt><dd>underlying sink reference </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a0dafb02c8c173d1cbfcccdb29edf5720"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Sink &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">staticlib::crypto::sha256_sink</a>&lt; Sink &gt;::is_bogus </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether error happened during processing. </p>
+<dl class="section return"><dt>Returns</dt><dd>whether error happened during processing </dd></dl>
 
 </div>
 </div>
@@ -420,7 +449,7 @@ template&lt;typename Sink &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 6 2016 20:34:40 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 16 2016 14:44:18 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

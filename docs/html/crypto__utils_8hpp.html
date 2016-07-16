@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">staticlib_crypto
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">0.5.1</span>
    </div>
   </td>
  </tr>
@@ -85,6 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -94,24 +95,40 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;array&gt;</code><br/>
 <code>#include &lt;string&gt;</code><br/>
 <code>#include &lt;utility&gt;</code><br/>
+<code>#include &lt;cerrno&gt;</code><br/>
 <code>#include &lt;cstdint&gt;</code><br/>
+<code>#include &quot;openssl/bio.h&quot;</code><br/>
+<code>#include &quot;openssl/evp.h&quot;</code><br/>
+<code>#include &quot;openssl/x509.h&quot;</code><br/>
 </div>
 <p><a href="crypto__utils_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1detail_1_1EVP__PKEY__Deleter.html">staticlib::crypto::detail::EVP_PKEY_Deleter</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1detail_1_1EVP__MD__CTX__Deleter.html">staticlib::crypto::detail::EVP_MD_CTX_Deleter</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1detail_1_1BIO__Deleter.html">staticlib::crypto::detail::BIO_Deleter</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1detail_1_1X509__Deleter.html">staticlib::crypto::detail::X509_Deleter</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacestaticlib"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib.html">staticlib</a></td></tr>
 <tr class="memitem:namespacestaticlib_1_1crypto"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html">staticlib::crypto</a></td></tr>
+<tr class="memitem:namespacestaticlib_1_1crypto_1_1detail"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto_1_1detail.html">staticlib::crypto::detail</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:af652d70295090b06b795ff8e906b2dbf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#af652d70295090b06b795ff8e906b2dbf">staticlib::crypto::to_hex</a> (const unsigned char *buf, size_t len)</td></tr>
 <tr class="memdesc:af652d70295090b06b795ff8e906b2dbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts specified buffer into hex format.  <a href="#af652d70295090b06b795ff8e906b2dbf"></a><br/></td></tr>
+<tr class="memitem:aef002f2ba2de67aa3f0b599d849f9d76"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#aef002f2ba2de67aa3f0b599d849f9d76">staticlib::crypto::to_hex</a> (const std::string &amp;data)</td></tr>
+<tr class="memdesc:aef002f2ba2de67aa3f0b599d849f9d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts specified string with binary data into hex format.  <a href="#aef002f2ba2de67aa3f0b599d849f9d76"></a><br/></td></tr>
+<tr class="memitem:a605978194ba099404e251a45518f744e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#a605978194ba099404e251a45518f744e">staticlib::crypto::from_hex</a> (const std::string &amp;hex_data)</td></tr>
+<tr class="memdesc:a605978194ba099404e251a45518f744e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts specified string with hex data into binary format.  <a href="#a605978194ba099404e251a45518f744e"></a><br/></td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 6 2016 20:34:40 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 16 2016 14:44:18 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

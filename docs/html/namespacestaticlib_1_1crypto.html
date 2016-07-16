@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">staticlib_crypto
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">0.5.1</span>
    </div>
   </td>
  </tr>
@@ -86,6 +86,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
@@ -93,17 +94,45 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacestaticlib_1_1crypto_1_1detail"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto_1_1detail.html">detail</a></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1digest__sign__source.html">digest_sign_source</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source wrapper that computes digest signature of the data read through it.  <a href="classstaticlib_1_1crypto_1_1digest__sign__source.html#details">More...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1digest__verify__source.html">digest_verify_source</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source wrapper that computes digest signature of the data read through it.  <a href="classstaticlib_1_1crypto_1_1digest__verify__source.html#details">More...</a><br/></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">sha256_sink</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sink wrapper that computer SHA-256 hash sum of the data written through it.  <a href="classstaticlib_1_1crypto_1_1sha256__sink.html#details">More...</a><br/></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">sha256_source</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source wrapper that computer SHA-256 hash sum of the data read through it.  <a href="classstaticlib_1_1crypto_1_1sha256__source.html#details">More...</a><br/></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Source wrapper that computes SHA-256 hash sum of the data read through it.  <a href="classstaticlib_1_1crypto_1_1sha256__source.html#details">More...</a><br/></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:af652d70295090b06b795ff8e906b2dbf"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#af652d70295090b06b795ff8e906b2dbf">to_hex</a> (const unsigned char *buf, size_t len)</td></tr>
 <tr class="memdesc:af652d70295090b06b795ff8e906b2dbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts specified buffer into hex format.  <a href="#af652d70295090b06b795ff8e906b2dbf"></a><br/></td></tr>
+<tr class="memitem:aef002f2ba2de67aa3f0b599d849f9d76"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#aef002f2ba2de67aa3f0b599d849f9d76">to_hex</a> (const std::string &amp;data)</td></tr>
+<tr class="memdesc:aef002f2ba2de67aa3f0b599d849f9d76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts specified string with binary data into hex format.  <a href="#aef002f2ba2de67aa3f0b599d849f9d76"></a><br/></td></tr>
+<tr class="memitem:a605978194ba099404e251a45518f744e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#a605978194ba099404e251a45518f744e">from_hex</a> (const std::string &amp;hex_data)</td></tr>
+<tr class="memdesc:a605978194ba099404e251a45518f744e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts specified string with hex data into binary format.  <a href="#a605978194ba099404e251a45518f744e"></a><br/></td></tr>
+<tr class="memitem:ac385ce513eada77151c16a26ca2a3be5"><td class="memTemplParams" colspan="2">template&lt;typename Source , class  = typename std::enable_if&lt;!std::is_lvalue_reference&lt;Source&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:ac385ce513eada77151c16a26ca2a3be5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1digest__sign__source.html">digest_sign_source</a>&lt; Source &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#ac385ce513eada77151c16a26ca2a3be5">make_digest_sign_source</a> (Source &amp;&amp;source, const std::string &amp;key_path, const std::string &amp;key_pwd, const std::string &amp;digest_name=&quot;SHA256&quot;)</td></tr>
+<tr class="memdesc:ac385ce513eada77151c16a26ca2a3be5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating digest_sign sources, created source wrapper will own specified source.  <a href="#ac385ce513eada77151c16a26ca2a3be5"></a><br/></td></tr>
+<tr class="memitem:ac72356c368ff414a0c5e0dcc6eb0dd5f"><td class="memTemplParams" colspan="2">template&lt;typename Source &gt; </td></tr>
+<tr class="memitem:ac72356c368ff414a0c5e0dcc6eb0dd5f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1digest__sign__source.html">digest_sign_source</a><br class="typebreak"/>
+&lt; staticlib::io::reference_source<br class="typebreak"/>
+&lt; Source &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#ac72356c368ff414a0c5e0dcc6eb0dd5f">make_digest_sign_source</a> (Source &amp;source, const std::string &amp;key_path, const std::string &amp;key_pwd, const std::string &amp;digest_name=&quot;SHA256&quot;)</td></tr>
+<tr class="memdesc:ac72356c368ff414a0c5e0dcc6eb0dd5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating digest_sign sources, created source wrapper will NOT own specified source.  <a href="#ac72356c368ff414a0c5e0dcc6eb0dd5f"></a><br/></td></tr>
+<tr class="memitem:a3c5f124d7befb334f96aee275f3917e9"><td class="memTemplParams" colspan="2">template&lt;typename Source , class  = typename std::enable_if&lt;!std::is_lvalue_reference&lt;Source&gt;::value&gt;::type&gt; </td></tr>
+<tr class="memitem:a3c5f124d7befb334f96aee275f3917e9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1digest__verify__source.html">digest_verify_source</a>&lt; Source &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#a3c5f124d7befb334f96aee275f3917e9">make_digest_verify_source</a> (Source &amp;&amp;source, const std::string &amp;cert_path, const std::string &amp;signature, const std::string &amp;digest_name=&quot;SHA256&quot;)</td></tr>
+<tr class="memdesc:a3c5f124d7befb334f96aee275f3917e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating digest_verify sources, created source wrapper will own specified source.  <a href="#a3c5f124d7befb334f96aee275f3917e9"></a><br/></td></tr>
+<tr class="memitem:a4ec1c6555218af3e45c9e44fd39ed2cf"><td class="memTemplParams" colspan="2">template&lt;typename Source &gt; </td></tr>
+<tr class="memitem:a4ec1c6555218af3e45c9e44fd39ed2cf"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1digest__verify__source.html">digest_verify_source</a><br class="typebreak"/>
+&lt; staticlib::io::reference_source<br class="typebreak"/>
+&lt; Source &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#a4ec1c6555218af3e45c9e44fd39ed2cf">make_digest_verify_source</a> (Source &amp;source, const std::string &amp;cert_path, const std::string &amp;signature, const std::string &amp;digest_name=&quot;SHA256&quot;)</td></tr>
+<tr class="memdesc:a4ec1c6555218af3e45c9e44fd39ed2cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating digest_verify sources, created source wrapper will NOT own specified source.  <a href="#a4ec1c6555218af3e45c9e44fd39ed2cf"></a><br/></td></tr>
 <tr class="memitem:ab60daf84af766365e7d5c3827ea051b9"><td class="memTemplParams" colspan="2">template&lt;typename Sink , class  = typename std::enable_if&lt;!std::is_lvalue_reference&lt;Sink&gt;::value&gt;::type&gt; </td></tr>
 <tr class="memitem:ab60daf84af766365e7d5c3827ea051b9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">sha256_sink</a>&lt; Sink &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#ab60daf84af766365e7d5c3827ea051b9">make_sha256_sink</a> (Sink &amp;&amp;sink)</td></tr>
 <tr class="memdesc:ab60daf84af766365e7d5c3827ea051b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating counting sinks, created sink wrapper will own specified sink.  <a href="#ab60daf84af766365e7d5c3827ea051b9"></a><br/></td></tr>
@@ -114,14 +143,235 @@ Functions</h2></td></tr>
 <tr class="memdesc:abb627b1c2962fd5e5684591fbcabe046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating counting sinks, created sink wrapper will NOT own specified sink.  <a href="#abb627b1c2962fd5e5684591fbcabe046"></a><br/></td></tr>
 <tr class="memitem:aef9ccbb5b00b00dd173183d01e763b3c"><td class="memTemplParams" colspan="2">template&lt;typename Source , class  = typename std::enable_if&lt;!std::is_lvalue_reference&lt;Source&gt;::value&gt;::type&gt; </td></tr>
 <tr class="memitem:aef9ccbb5b00b00dd173183d01e763b3c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">sha256_source</a>&lt; Source &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#aef9ccbb5b00b00dd173183d01e763b3c">make_sha256_source</a> (Source &amp;&amp;source)</td></tr>
-<tr class="memdesc:aef9ccbb5b00b00dd173183d01e763b3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating counting sources, created source wrapper will own specified source.  <a href="#aef9ccbb5b00b00dd173183d01e763b3c"></a><br/></td></tr>
+<tr class="memdesc:aef9ccbb5b00b00dd173183d01e763b3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating sha256 sources, created source wrapper will own specified source.  <a href="#aef9ccbb5b00b00dd173183d01e763b3c"></a><br/></td></tr>
 <tr class="memitem:aedb0b874b5667d3b9cb45e52bced4ca7"><td class="memTemplParams" colspan="2">template&lt;typename Source &gt; </td></tr>
 <tr class="memitem:aedb0b874b5667d3b9cb45e52bced4ca7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">sha256_source</a><br class="typebreak"/>
 &lt; staticlib::io::reference_source<br class="typebreak"/>
 &lt; Source &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#aedb0b874b5667d3b9cb45e52bced4ca7">make_sha256_source</a> (Source &amp;source)</td></tr>
-<tr class="memdesc:aedb0b874b5667d3b9cb45e52bced4ca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating counting sources, created source wrapper will NOT own specified source.  <a href="#aedb0b874b5667d3b9cb45e52bced4ca7"></a><br/></td></tr>
+<tr class="memdesc:aedb0b874b5667d3b9cb45e52bced4ca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating sha256 sources, created source wrapper will NOT own specified source.  <a href="#aedb0b874b5667d3b9cb45e52bced4ca7"></a><br/></td></tr>
 </table>
 <h2>Function Documentation</h2>
+<a class="anchor" id="a605978194ba099404e251a45518f744e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string staticlib::crypto::from_hex </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>hex_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts specified string with hex data into binary format. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hex_data</td><td>string with hex data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>data in binary format </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac385ce513eada77151c16a26ca2a3be5"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Source , class  = typename std::enable_if&lt;!std::is_lvalue_reference&lt;Source&gt;::value&gt;::type&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstaticlib_1_1crypto_1_1digest__sign__source.html">digest_sign_source</a>&lt;Source&gt; staticlib::crypto::make_digest_sign_source </td>
+          <td>(</td>
+          <td class="paramtype">Source &amp;&amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key_path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key_pwd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>digest_name</em> = <code>&quot;SHA256&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Factory function for creating digest_sign sources, created source wrapper will own specified source. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>input source </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>digest_sign source </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ac72356c368ff414a0c5e0dcc6eb0dd5f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Source &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstaticlib_1_1crypto_1_1digest__sign__source.html">digest_sign_source</a>&lt;staticlib::io::reference_source&lt;Source&gt; &gt; staticlib::crypto::make_digest_sign_source </td>
+          <td>(</td>
+          <td class="paramtype">Source &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key_path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>key_pwd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>digest_name</em> = <code>&quot;SHA256&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Factory function for creating digest_sign sources, created source wrapper will NOT own specified source. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>input source </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>digest_sign source </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3c5f124d7befb334f96aee275f3917e9"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Source , class  = typename std::enable_if&lt;!std::is_lvalue_reference&lt;Source&gt;::value&gt;::type&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstaticlib_1_1crypto_1_1digest__verify__source.html">digest_verify_source</a>&lt;Source&gt; staticlib::crypto::make_digest_verify_source </td>
+          <td>(</td>
+          <td class="paramtype">Source &amp;&amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>cert_path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>signature</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>digest_name</em> = <code>&quot;SHA256&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Factory function for creating digest_verify sources, created source wrapper will own specified source. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>input source </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>digest_verify source </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4ec1c6555218af3e45c9e44fd39ed2cf"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Source &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classstaticlib_1_1crypto_1_1digest__verify__source.html">digest_verify_source</a>&lt;staticlib::io::reference_source&lt;Source&gt; &gt; staticlib::crypto::make_digest_verify_source </td>
+          <td>(</td>
+          <td class="paramtype">Source &amp;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>cert_path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>signature</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>digest_name</em> = <code>&quot;SHA256&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Factory function for creating digest_verify sources, created source wrapper will NOT own specified source. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>input source </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>digest_verify source </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="ab60daf84af766365e7d5c3827ea051b9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -192,14 +442,14 @@ template&lt;typename Source , class  = typename std::enable_if&lt;!std::is_lvalu
       </table>
 </div><div class="memdoc">
 
-<p>Factory function for creating counting sources, created source wrapper will own specified source. </p>
+<p>Factory function for creating sha256 sources, created source wrapper will own specified source. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">source</td><td>input source </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>counting source </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>sha256 source </dd></dl>
 
 </div>
 </div>
@@ -219,14 +469,14 @@ template&lt;typename Source &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Factory function for creating counting sources, created source wrapper will NOT own specified source. </p>
+<p>Factory function for creating sha256 sources, created source wrapper will NOT own specified source. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">source</td><td>input source </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>counting source </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>sha256 source </dd></dl>
 
 </div>
 </div>
@@ -266,10 +516,35 @@ template&lt;typename Source &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="aef002f2ba2de67aa3f0b599d849f9d76"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string staticlib::crypto::to_hex </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts specified string with binary data into hex format. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>string with binary data </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>data in hex format </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 6 2016 20:34:40 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 16 2016 14:44:18 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">staticlib_crypto
-   &#160;<span id="projectnumber">1.0</span>
+   &#160;<span id="projectnumber">0.5.1</span>
    </div>
   </td>
  </tr>
@@ -94,7 +94,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
-<p>Source wrapper that computer SHA-256 hash sum of the data read through it.  
+<p>Source wrapper that computes SHA-256 hash sum of the data read through it.  
  <a href="classstaticlib_1_1crypto_1_1sha256__source.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="sha256__source_8hpp_source.html">staticlib/crypto/sha256_source.hpp</a>&gt;</code></p>
@@ -102,7 +102,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr class="heading"><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6b0797efe213c61eb2a6f9bb78989c47"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#a6b0797efe213c61eb2a6f9bb78989c47">sha256_source</a> (Source &amp;&amp;src)</td></tr>
-<tr class="memdesc:a6b0797efe213c61eb2a6f9bb78989c47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computed hash.  <a href="#a6b0797efe213c61eb2a6f9bb78989c47"></a><br/></td></tr>
+<tr class="memdesc:a6b0797efe213c61eb2a6f9bb78989c47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor, created source wrapper will own specified source.  <a href="#a6b0797efe213c61eb2a6f9bb78989c47"></a><br/></td></tr>
 <tr class="memitem:acc13922dad09a28c47744a23c1e0b981"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#acc13922dad09a28c47744a23c1e0b981">sha256_source</a> (const <a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">sha256_source</a> &amp;)</td></tr>
 <tr class="memdesc:acc13922dad09a28c47744a23c1e0b981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deleted copy constructor.  <a href="#acc13922dad09a28c47744a23c1e0b981"></a><br/></td></tr>
 <tr class="memitem:ae4af5297060bd7f72c1c4d05248f8656"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">sha256_source</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#ae4af5297060bd7f72c1c4d05248f8656">operator=</a> (const <a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">sha256_source</a> &amp;)</td></tr>
@@ -113,16 +113,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aa9278ea54b5fd1a3ba72ae55f94ec842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#aa9278ea54b5fd1a3ba72ae55f94ec842"></a><br/></td></tr>
 <tr class="memitem:adb88e6692e182e24e1314976ad7590df"><td class="memItemLeft" align="right" valign="top">std::streamsize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#adb88e6692e182e24e1314976ad7590df">read</a> (char *buffer, std::streamsize length)</td></tr>
 <tr class="memdesc:adb88e6692e182e24e1314976ad7590df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counting read implementation.  <a href="#adb88e6692e182e24e1314976ad7590df"></a><br/></td></tr>
-<tr class="memitem:a36586b58465a17f0f7d2793fff5040e0"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#a36586b58465a17f0f7d2793fff5040e0">get_hash</a> ()</td></tr>
-<tr class="memdesc:a36586b58465a17f0f7d2793fff5040e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of bytes read through this instance.  <a href="#a36586b58465a17f0f7d2793fff5040e0"></a><br/></td></tr>
+<tr class="memitem:a4581447f077dea3bb5f7436f1c7cf3c9"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#a4581447f077dea3bb5f7436f1c7cf3c9">get_hash</a> ()</td></tr>
+<tr class="memdesc:a4581447f077dea3bb5f7436f1c7cf3c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns computed hash sum.  <a href="#a4581447f077dea3bb5f7436f1c7cf3c9"></a><br/></td></tr>
 <tr class="memitem:ad3d4a470b4cecf26c51b3ce12056af83"><td class="memItemLeft" align="right" valign="top">Source &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#ad3d4a470b4cecf26c51b3ce12056af83">get_source</a> ()</td></tr>
 <tr class="memdesc:ad3d4a470b4cecf26c51b3ce12056af83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Underlying source accessor.  <a href="#ad3d4a470b4cecf26c51b3ce12056af83"></a><br/></td></tr>
+<tr class="memitem:a6cf0779606ef4799001464994477fd00"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#a6cf0779606ef4799001464994477fd00">is_bogus</a> ()</td></tr>
+<tr class="memdesc:a6cf0779606ef4799001464994477fd00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether error happened during processing.  <a href="#a6cf0779606ef4799001464994477fd00"></a><br/></td></tr>
 </table>
 <a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename Source&gt;<br/>
 class staticlib::crypto::sha256_source&lt; Source &gt;</h3>
 
-<p>Source wrapper that computer SHA-256 hash sum of the data read through it. </p>
+<p>Source wrapper that computes SHA-256 hash sum of the data read through it. </p>
 </div><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a6b0797efe213c61eb2a6f9bb78989c47"></a>
 <div class="memitem">
@@ -148,8 +150,7 @@ template&lt;typename Source &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Computed hash. </p>
-<p>Constructor, created source wrapper will own specified source</p>
+<p>Constructor, created source wrapper will own specified source. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">src</td><td>input source </td></tr>
@@ -220,7 +221,7 @@ template&lt;typename Source &gt; </div>
 </div>
 </div>
 <h2>Member Function Documentation</h2>
-<a class="anchor" id="a36586b58465a17f0f7d2793fff5040e0"></a>
+<a class="anchor" id="a4581447f077dea3bb5f7436f1c7cf3c9"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -230,7 +231,7 @@ template&lt;typename Source &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">staticlib::crypto::sha256_source</a>&lt; Source &gt;::get_hash </td>
+          <td class="memname">const std::string&amp; <a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">staticlib::crypto::sha256_source</a>&lt; Source &gt;::get_hash </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -243,8 +244,8 @@ template&lt;typename Source &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns number of bytes read through this instance. </p>
-<dl class="section return"><dt>Returns</dt><dd>number of bytes read through this instance </dd></dl>
+<p>Returns computed hash sum. </p>
+<dl class="section return"><dt>Returns</dt><dd>computed hash sum </dd></dl>
 
 </div>
 </div>
@@ -273,6 +274,34 @@ template&lt;typename Source &gt; </div>
 
 <p>Underlying source accessor. </p>
 <dl class="section return"><dt>Returns</dt><dd>underlying source reference </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6cf0779606ef4799001464994477fd00"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Source &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">staticlib::crypto::sha256_source</a>&lt; Source &gt;::is_bogus </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Whether error happened during processing. </p>
+<dl class="section return"><dt>Returns</dt><dd>whether error happened during processing </dd></dl>
 
 </div>
 </div>
@@ -390,7 +419,7 @@ template&lt;typename Source &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Feb 6 2016 20:34:40 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sat Jul 16 2016 14:44:18 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
