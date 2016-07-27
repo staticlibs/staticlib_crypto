@@ -76,7 +76,7 @@ public:
  * @param len length of specified buffer
  * @return data in hex format
  */
-std::string to_hex(const unsigned char* buf, size_t len) {
+inline std::string to_hex(const unsigned char* buf, size_t len) {
     // http://stackoverflow.com/a/18025541/314015
     std::array<char, 16> symbols = {{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'}};
     std::string res{};
@@ -96,7 +96,7 @@ std::string to_hex(const unsigned char* buf, size_t len) {
  * @param data string with binary data
  * @return data in hex format
  */
-std::string to_hex(const std::string& data) {
+inline std::string to_hex(const std::string& data) {
     return to_hex(reinterpret_cast<const unsigned char*> (data.c_str()), data.length());
 }
 
@@ -107,7 +107,7 @@ std::string to_hex(const std::string& data) {
  * @return data in binary format
  */
 
-std::string from_hex(const std::string& hex_data) {
+inline std::string from_hex(const std::string& hex_data) {
     std::string res;
     std::array<char, 3> buf;
     buf[2] = '\0';
