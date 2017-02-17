@@ -50,7 +50,7 @@ void test_sign() {
     slassert(!src.is_bogus());
     auto sink = io::string_sink();
     std::array<char, 2> buf;
-    io::copy_all(src, sink, buf.data(), buf.size());
+    io::copy_all(src, sink, buf);
 
     slassert(SIGNATURE == src.get_signature());
 }

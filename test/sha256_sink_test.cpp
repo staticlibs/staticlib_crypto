@@ -36,7 +36,7 @@ void test_hash() {
     io::string_source src{"foo42\n"};
     auto sink = sc::make_sha256_sink(io::string_sink{});
     std::array<char, 2> buf;
-    io::copy_all(src, sink, buf.data(), buf.size());
+    io::copy_all(src, sink, buf);
     
     slassert("ee41b4f1a590fae151736f09890dbd98d0707421ad84fa25afe89e1e30006009" == sink.get_hash());
 }

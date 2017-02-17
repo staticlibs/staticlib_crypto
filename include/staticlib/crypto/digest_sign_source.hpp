@@ -32,6 +32,7 @@
 #include "openssl/evp.h"
 #include "openssl/pem.h"
 
+#include "staticlib/config/span.hpp"
 #include "staticlib/io/reference_source.hpp"
 
 #include "staticlib/crypto/crypto_utils.hpp"
@@ -146,12 +147,12 @@ public:
      * @param length number of bytes to process
      * @return number of bytes processed
      */
-    std::streamsize read(char* buffer, std::streamsize length) {
+    std::streamsize read(staticlib::config::span<char> span) {
         if (1 == error) {
-            std::streamsize res = src.read(buffer, length);
+            std::streamsize res = src.read(span);
             if (res > 0) {
                 error = EVP_DigestSignUpdate(ctx.get(), 
-                        reinterpret_cast<const unsigned char*> (buffer), 
+                        reinterpret_cast<const unsigned char*> (span.data()), 
                         static_cast<size_t> (res));
             }
             return 1 == error ? res : std::char_traits<char>::eof();

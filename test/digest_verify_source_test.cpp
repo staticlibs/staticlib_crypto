@@ -58,7 +58,7 @@ void test_verify() {
     slassert(!src.is_bogus());
     auto sink = io::string_sink();
     std::array<char, 2> buf;
-    io::copy_all(src, sink, buf.data(), buf.size());
+    io::copy_all(src, sink, buf);
 
     slassert(src.is_signature_valid());
 }
@@ -68,7 +68,7 @@ void test_verify_fail() {
     slassert(!src.is_bogus());
     auto sink = io::string_sink();
     std::array<char, 2> buf;
-    io::copy_all(src, sink, buf.data(), buf.size());
+    io::copy_all(src, sink, buf);
 
     slassert(!src.is_signature_valid());
 }

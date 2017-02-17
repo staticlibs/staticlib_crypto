@@ -35,7 +35,13 @@ if ( NOT DEFINED STATICLIB_TOOLCHAIN )
     if ( NOT ${CMAKE_SYSTEM_NAME} STREQUAL "Linux" ) 
         staticlib_crypto_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../external_openssl )
     endif ( )
+    staticlib_crypto_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../staticlib_config )
+    staticlib_crypto_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../staticlib_io )
 endif ( )
+
+# dependencies
+set ( ${PROJECT_NAME}_DEPS staticlib_config )
+staticlib_io_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
 
 # target
 file ( GLOB_RECURSE ${PROJECT_NAME}_HEADERS ${CMAKE_CURRENT_LIST_DIR}/include/*.hpp )
