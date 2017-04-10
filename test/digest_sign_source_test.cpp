@@ -29,9 +29,6 @@
 #include "staticlib/config/assert.hpp"
 #include "staticlib/io.hpp"
 
-namespace io = staticlib::io;
-namespace sc = staticlib::crypto;
-
 const std::string TEXT = "foo bar baz";
 const std::string SIGNATURE = ""
         "9553aef514b5c005e46b864234c254bf7a792a77cde8b3fdf65385238ed292b0"
@@ -46,11 +43,11 @@ const std::string KEY_PATH = "../test/certificate/test.key";
 const std::string KEY_PASSWORD = "test";
 
 void test_sign() {
-    auto src = sc::make_digest_sign_source(io::string_source(TEXT), KEY_PATH, KEY_PASSWORD);
+    auto src = sl::crypto::make_digest_sign_source(sl::io::string_source(TEXT), KEY_PATH, KEY_PASSWORD);
     slassert(!src.is_bogus());
-    auto sink = io::string_sink();
+    auto sink = sl::io::string_sink();
     std::array<char, 2> buf;
-    io::copy_all(src, sink, buf);
+    sl::io::copy_all(src, sink, buf);
 
     slassert(SIGNATURE == src.get_signature());
 }

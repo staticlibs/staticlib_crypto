@@ -19,6 +19,10 @@ Changelog
 ---------
 
 **2016-07-16**
+ * version 0.5.2
+ * deps update
+
+**2016-07-16**
 
  * version 0.5.1
  * `digest_sign` and `digest_verify` sources

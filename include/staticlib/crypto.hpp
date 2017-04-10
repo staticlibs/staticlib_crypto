@@ -24,6 +24,8 @@
 #ifndef STATICLIB_CRYPTO_HPP
 #define	STATICLIB_CRYPTO_HPP
 
+#include "staticlib/config.hpp"
+
 #include "staticlib/crypto/crypto_utils.hpp"
 #include "staticlib/crypto/digest_sign_source.hpp"
 #include "staticlib/crypto/digest_verify_source.hpp"

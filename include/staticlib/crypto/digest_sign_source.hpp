@@ -32,7 +32,8 @@
 #include "openssl/evp.h"
 #include "openssl/pem.h"
 
-#include "staticlib/config/span.hpp"
+#include "staticlib/config.hpp"
+#include "staticlib/io/span.hpp"
 #include "staticlib/io/reference_source.hpp"
 
 #include "staticlib/crypto/crypto_utils.hpp"
@@ -147,7 +148,7 @@ public:
      * @param length number of bytes to process
      * @return number of bytes processed
      */
-    std::streamsize read(staticlib::config::span<char> span) {
+    std::streamsize read(sl::io::span<char> span) {
         if (1 == error) {
             std::streamsize res = src.read(span);
             if (res > 0) {

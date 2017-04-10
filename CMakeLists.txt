@@ -15,7 +15,7 @@
 cmake_minimum_required ( VERSION 2.8.12 )
 
 project ( staticlib_crypto CXX )
-set ( ${PROJECT_NAME}_STATICLIB_VERSION 0.5.1 )
+set ( ${PROJECT_NAME}_STATICLIB_VERSION 0.5.2 )
 set ( ${PROJECT_NAME}_DESCRIPTION "Staticlibs Crypto library" )
 set ( ${PROJECT_NAME}_URL https://github.com/staticlibs/staticlib_crypto )
 include ( ${CMAKE_CURRENT_LIST_DIR}/resources/macros.cmake )
@@ -36,11 +36,12 @@ if ( NOT DEFINED STATICLIB_TOOLCHAIN )
         staticlib_crypto_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../external_openssl )
     endif ( )
     staticlib_crypto_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../staticlib_config )
+    staticlib_crypto_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../staticlib_support )
     staticlib_crypto_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../staticlib_io )
 endif ( )
 
 # dependencies
-set ( ${PROJECT_NAME}_DEPS staticlib_config )
+set ( ${PROJECT_NAME}_DEPS staticlib_io openssl )
 staticlib_io_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
 
 # target
@@ -49,7 +50,7 @@ source_group ( "include" FILES ${${PROJECT_NAME}_HEADERS} )
 add_custom_target ( ${PROJECT_NAME} SOURCES ${${PROJECT_NAME}_HEADERS} )
 
 # pkg-config
-set ( ${PROJECT_NAME}_PC_REQUIRES "openssl" )
 set ( ${PROJECT_NAME}_PC_CFLAGS "-I${CMAKE_CURRENT_LIST_DIR}/include" )
+staticlib_crypto_list_to_string ( ${PROJECT_NAME}_PC_REQUIRES "" ${PROJECT_NAME}_DEPS )
 configure_file ( ${CMAKE_CURRENT_LIST_DIR}/resources/pkg-config.in 
         ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pkgconfig/${PROJECT_NAME}.pc )

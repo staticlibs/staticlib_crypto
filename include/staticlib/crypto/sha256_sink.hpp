@@ -31,7 +31,8 @@
 
 #include "openssl/sha.h"
 
-#include "staticlib/config/span.hpp"
+#include "staticlib/config.hpp"
+#include "staticlib/io/span.hpp"
 #include "staticlib/io/reference_sink.hpp"
 
 #include "staticlib/crypto/crypto_utils.hpp"
@@ -122,7 +123,7 @@ public:
      * @param length number of bytes to process
      * @return number of bytes processed
      */
-    std::streamsize write(staticlib::config::span<const char> span) {
+    std::streamsize write(sl::io::span<const char> span) {
         if (1 == error) {
             std::streamsize res = sink.write(span);
             if (res > 0) {

@@ -29,14 +29,11 @@
 #include "staticlib/config/assert.hpp"
 #include "staticlib/io.hpp"
 
-namespace io = staticlib::io;
-namespace sc = staticlib::crypto;
-
 void test_hash() {
-    auto src = sc::make_sha256_source(io::string_source("foo42\n"));
-    auto sink = io::string_sink();
+    auto src = sl::crypto::make_sha256_source(sl::io::string_source("foo42\n"));
+    auto sink = sl::io::string_sink();
     std::array<char, 2> buf;
-    io::copy_all(src, sink, buf);
+    sl::io::copy_all(src, sink, buf);
 
     slassert("ee41b4f1a590fae151736f09890dbd98d0707421ad84fa25afe89e1e30006009" == src.get_hash());
 }

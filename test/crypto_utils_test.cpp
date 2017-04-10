@@ -27,12 +27,10 @@
 
 #include "staticlib/config/assert.hpp"
 
-namespace sc = staticlib::crypto;
-
 void test_hex() {
     std::string data = "foo";
-    std::string hex = sc::to_hex(data);
-    slassert(data ==  sc::from_hex(hex));
+    std::string hex = sl::crypto::to_hex(data);
+    slassert(data ==  sl::crypto::from_hex(hex));
 }
 
 int main() {

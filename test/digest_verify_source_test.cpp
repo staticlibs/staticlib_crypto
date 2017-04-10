@@ -29,9 +29,6 @@
 #include "staticlib/config/assert.hpp"
 #include "staticlib/io.hpp"
 
-namespace io = staticlib::io;
-namespace sc = staticlib::crypto;
-
 const std::string TEXT = "foo bar baz";
 const std::string SIGNATURE = ""
         "9553aef514b5c005e46b864234c254bf7a792a77cde8b3fdf65385238ed292b0"
@@ -54,21 +51,21 @@ const std::string SIGNATURE_FAIL = ""
 const std::string CERT_PATH = "../test/certificate/test.cer";
 
 void test_verify() {
-    auto src = sc::make_digest_verify_source(io::string_source(TEXT), CERT_PATH, SIGNATURE);
+    auto src = sl::crypto::make_digest_verify_source(sl::io::string_source(TEXT), CERT_PATH, SIGNATURE);
     slassert(!src.is_bogus());
-    auto sink = io::string_sink();
+    auto sink = sl::io::string_sink();
     std::array<char, 2> buf;
-    io::copy_all(src, sink, buf);
+    sl::io::copy_all(src, sink, buf);
 
     slassert(src.is_signature_valid());
 }
 
 void test_verify_fail() {
-    auto src = sc::make_digest_verify_source(io::string_source(TEXT), CERT_PATH, SIGNATURE_FAIL);
+    auto src = sl::crypto::make_digest_verify_source(sl::io::string_source(TEXT), CERT_PATH, SIGNATURE_FAIL);
     slassert(!src.is_bogus());
-    auto sink = io::string_sink();
+    auto sink = sl::io::string_sink();
     std::array<char, 2> buf;
-    io::copy_all(src, sink, buf);
+    sl::io::copy_all(src, sink, buf);
 
     slassert(!src.is_signature_valid());
 }
