@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">staticlib_crypto
-   &#160;<span id="projectnumber">0.5.1</span>
+   &#160;<span id="projectnumber">0.5.2</span>
    </div>
   </td>
  </tr>
@@ -111,8 +111,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6a35730f695de16cb329175194a434d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <a href="#a6a35730f695de16cb329175194a434d3"></a><br/></td></tr>
 <tr class="memitem:aa9278ea54b5fd1a3ba72ae55f94ec842"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">sha256_source</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#aa9278ea54b5fd1a3ba72ae55f94ec842">operator=</a> (<a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">sha256_source</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:aa9278ea54b5fd1a3ba72ae55f94ec842"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#aa9278ea54b5fd1a3ba72ae55f94ec842"></a><br/></td></tr>
-<tr class="memitem:adb88e6692e182e24e1314976ad7590df"><td class="memItemLeft" align="right" valign="top">std::streamsize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#adb88e6692e182e24e1314976ad7590df">read</a> (char *buffer, std::streamsize length)</td></tr>
-<tr class="memdesc:adb88e6692e182e24e1314976ad7590df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counting read implementation.  <a href="#adb88e6692e182e24e1314976ad7590df"></a><br/></td></tr>
+<tr class="memitem:a69ff83295d774145cdfb542121b468f1"><td class="memItemLeft" align="right" valign="top">std::streamsize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#a69ff83295d774145cdfb542121b468f1">read</a> (sl::io::span&lt; char &gt; span)</td></tr>
+<tr class="memdesc:a69ff83295d774145cdfb542121b468f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counting read implementation.  <a href="#a69ff83295d774145cdfb542121b468f1"></a><br/></td></tr>
 <tr class="memitem:a4581447f077dea3bb5f7436f1c7cf3c9"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#a4581447f077dea3bb5f7436f1c7cf3c9">get_hash</a> ()</td></tr>
 <tr class="memdesc:a4581447f077dea3bb5f7436f1c7cf3c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns computed hash sum.  <a href="#a4581447f077dea3bb5f7436f1c7cf3c9"></a><br/></td></tr>
 <tr class="memitem:ad3d4a470b4cecf26c51b3ce12056af83"><td class="memItemLeft" align="right" valign="top">Source &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html#ad3d4a470b4cecf26c51b3ce12056af83">get_source</a> ()</td></tr>
@@ -367,7 +367,7 @@ template&lt;typename Source &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="adb88e6692e182e24e1314976ad7590df"></a>
+<a class="anchor" id="a69ff83295d774145cdfb542121b468f1"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -379,19 +379,9 @@ template&lt;typename Source &gt; </div>
         <tr>
           <td class="memname">std::streamsize <a class="el" href="classstaticlib_1_1crypto_1_1sha256__source.html">staticlib::crypto::sha256_source</a>&lt; Source &gt;::read </td>
           <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">sl::io::span&lt; char &gt;&#160;</td>
+          <td class="paramname"><em>span</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::streamsize&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -419,7 +409,7 @@ template&lt;typename Source &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 16 2016 14:44:18 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Apr 10 2017 20:44:34 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

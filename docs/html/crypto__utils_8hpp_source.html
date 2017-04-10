@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">staticlib_crypto
-   &#160;<span id="projectnumber">0.5.1</span>
+   &#160;<span id="projectnumber">0.5.2</span>
    </div>
   </td>
  </tr>
@@ -159,7 +159,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;} <span class="comment">// namespace</span></div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="code" href="namespacestaticlib_1_1crypto.html#af652d70295090b06b795ff8e906b2dbf">   79</a></span>&#160;std::string <a class="code" href="namespacestaticlib_1_1crypto.html#af652d70295090b06b795ff8e906b2dbf" title="Converts specified buffer into hex format.">to_hex</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* buf, <span class="keywordtype">size_t</span> len) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="code" href="namespacestaticlib_1_1crypto.html#af652d70295090b06b795ff8e906b2dbf">   79</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacestaticlib_1_1crypto.html#af652d70295090b06b795ff8e906b2dbf" title="Converts specified buffer into hex format.">to_hex</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>* buf, <span class="keywordtype">size_t</span> len) {</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">// http://stackoverflow.com/a/18025541/314015</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    std::array&lt;char, 16&gt; symbols = {{<span class="charliteral">&#39;0&#39;</span>, <span class="charliteral">&#39;1&#39;</span>, <span class="charliteral">&#39;2&#39;</span>, <span class="charliteral">&#39;3&#39;</span>, <span class="charliteral">&#39;4&#39;</span>, <span class="charliteral">&#39;5&#39;</span>, <span class="charliteral">&#39;6&#39;</span>, <span class="charliteral">&#39;7&#39;</span>, <span class="charliteral">&#39;8&#39;</span>, <span class="charliteral">&#39;9&#39;</span>, <span class="charliteral">&#39;a&#39;</span>, <span class="charliteral">&#39;b&#39;</span>, <span class="charliteral">&#39;c&#39;</span>, <span class="charliteral">&#39;d&#39;</span>, <span class="charliteral">&#39;e&#39;</span>, <span class="charliteral">&#39;f&#39;</span>}};</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    std::string res{};</div>
@@ -173,11 +173,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keywordflow">return</span> res;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;}</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="code" href="namespacestaticlib_1_1crypto.html#aef002f2ba2de67aa3f0b599d849f9d76">   99</a></span>&#160;std::string <a class="code" href="namespacestaticlib_1_1crypto.html#af652d70295090b06b795ff8e906b2dbf" title="Converts specified buffer into hex format.">to_hex</a>(<span class="keyword">const</span> std::string&amp; data) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="code" href="namespacestaticlib_1_1crypto.html#aef002f2ba2de67aa3f0b599d849f9d76">   99</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacestaticlib_1_1crypto.html#af652d70295090b06b795ff8e906b2dbf" title="Converts specified buffer into hex format.">to_hex</a>(<span class="keyword">const</span> std::string&amp; data) {</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keywordflow">return</span> <a class="code" href="namespacestaticlib_1_1crypto.html#af652d70295090b06b795ff8e906b2dbf" title="Converts specified buffer into hex format.">to_hex</a>(reinterpret_cast&lt;const unsigned char*&gt; (data.c_str()), data.length());</div>
 <div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="code" href="namespacestaticlib_1_1crypto.html#a605978194ba099404e251a45518f744e">  110</a></span>&#160;std::string <a class="code" href="namespacestaticlib_1_1crypto.html#a605978194ba099404e251a45518f744e" title="Converts specified string with hex data into binary format.">from_hex</a>(<span class="keyword">const</span> std::string&amp; hex_data) {</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="code" href="namespacestaticlib_1_1crypto.html#a605978194ba099404e251a45518f744e">  110</a></span>&#160;<span class="keyword">inline</span> std::string <a class="code" href="namespacestaticlib_1_1crypto.html#a605978194ba099404e251a45518f744e" title="Converts specified string with hex data into binary format.">from_hex</a>(<span class="keyword">const</span> std::string&amp; hex_data) {</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    std::string res;</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    std::array&lt;char, 3&gt; buf;</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    buf[2] = <span class="charliteral">&#39;\0&#39;</span>;</div>
@@ -209,7 +209,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 16 2016 14:44:18 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Apr 10 2017 20:44:34 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

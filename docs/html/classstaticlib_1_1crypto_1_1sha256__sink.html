@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">staticlib_crypto
-   &#160;<span id="projectnumber">0.5.1</span>
+   &#160;<span id="projectnumber">0.5.2</span>
    </div>
   </td>
  </tr>
@@ -111,8 +111,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a0e2e2fda53837d10d0d69928706b2eb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move constructor.  <a href="#a0e2e2fda53837d10d0d69928706b2eb3"></a><br/></td></tr>
 <tr class="memitem:a09f57e06c3e35ce84e380e134a21d46f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">sha256_sink</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#a09f57e06c3e35ce84e380e134a21d46f">operator=</a> (<a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">sha256_sink</a> &amp;&amp;other)</td></tr>
 <tr class="memdesc:a09f57e06c3e35ce84e380e134a21d46f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move assignment operator.  <a href="#a09f57e06c3e35ce84e380e134a21d46f"></a><br/></td></tr>
-<tr class="memitem:a069714aac38d6fd0f26b3205c9e3044d"><td class="memItemLeft" align="right" valign="top">std::streamsize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#a069714aac38d6fd0f26b3205c9e3044d">write</a> (const char *buffer, std::streamsize length)</td></tr>
-<tr class="memdesc:a069714aac38d6fd0f26b3205c9e3044d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counting write implementation.  <a href="#a069714aac38d6fd0f26b3205c9e3044d"></a><br/></td></tr>
+<tr class="memitem:a82698e866d7df32a1d23a23c80182500"><td class="memItemLeft" align="right" valign="top">std::streamsize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#a82698e866d7df32a1d23a23c80182500">write</a> (sl::io::span&lt; const char &gt; span)</td></tr>
+<tr class="memdesc:a82698e866d7df32a1d23a23c80182500"><td class="mdescLeft">&#160;</td><td class="mdescRight">Counting write implementation.  <a href="#a82698e866d7df32a1d23a23c80182500"></a><br/></td></tr>
 <tr class="memitem:ab1069973b93fdeedde26c5a8aae2abcc"><td class="memItemLeft" align="right" valign="top">std::streamsize&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#ab1069973b93fdeedde26c5a8aae2abcc">flush</a> ()</td></tr>
 <tr class="memdesc:ab1069973b93fdeedde26c5a8aae2abcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flushes destination sink.  <a href="#ab1069973b93fdeedde26c5a8aae2abcc"></a><br/></td></tr>
 <tr class="memitem:a221587ede713779cb12a98aa3c0ec281"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html#a221587ede713779cb12a98aa3c0ec281">get_hash</a> ()</td></tr>
@@ -397,7 +397,7 @@ template&lt;typename Sink &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a069714aac38d6fd0f26b3205c9e3044d"></a>
+<a class="anchor" id="a82698e866d7df32a1d23a23c80182500"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -409,19 +409,9 @@ template&lt;typename Sink &gt; </div>
         <tr>
           <td class="memname">std::streamsize <a class="el" href="classstaticlib_1_1crypto_1_1sha256__sink.html">staticlib::crypto::sha256_sink</a>&lt; Sink &gt;::write </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">sl::io::span&lt; const char &gt;&#160;</td>
+          <td class="paramname"><em>span</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">std::streamsize&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -449,7 +439,7 @@ template&lt;typename Sink &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 16 2016 14:44:18 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Apr 10 2017 20:44:34 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>
