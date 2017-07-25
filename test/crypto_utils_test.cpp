@@ -28,8 +28,11 @@
 #include "staticlib/config/assert.hpp"
 
 void test_hex() {
-    std::string data = "foo";
+    // hello in russian
+    std::string data = "\xd0\xbf\xd1\x80\xd0\xb8\xd0\xb2\xd0\xb5\xd1\x82";
+    std::cout << data << std::endl;
     std::string hex = sl::crypto::to_hex(data);
+    std::cout << hex << std::endl;
     slassert(data ==  sl::crypto::from_hex(hex));
 }
 
