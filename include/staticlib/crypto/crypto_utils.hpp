@@ -24,11 +24,11 @@
 #ifndef STATICLIB_CRYPTO_CRYPTO_UTILS_HPP
 #define	STATICLIB_CRYPTO_CRYPTO_UTILS_HPP
 
-#include <array>
 #include <string>
 #include <utility>
-#include <cerrno>
 #include <cstdint>
+
+#include "staticlib/io.hpp"
 
 #include "openssl/bio.h"
 #include "openssl/evp.h"
@@ -77,17 +77,11 @@ public:
  * @return data in hex format
  */
 inline std::string to_hex(const unsigned char* buf, size_t len) {
-    // http://stackoverflow.com/a/18025541/314015
-    std::array<char, 16> symbols = {{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'}};
-    std::string res{};
-    res.resize(len * 2);
-    for (size_t i = 0; i < len; i++) {
-        int idx = buf[i] >> 4;
-        res[2 * i] = symbols[idx];
-        idx = buf[i] & 0x0f;
-        res[2 * i + 1] = symbols[idx];
-    }
-    return res;
+    const char* sbuf = reinterpret_cast<const char*>(buf);
+    auto src = sl::io::array_source(sbuf, len);
+    auto sink = sl::io::string_sink();
+    sl::io::copy_to_hex(src, sink);
+    return sink.get_string();
 }
 
 /**
@@ -97,7 +91,10 @@ inline std::string to_hex(const unsigned char* buf, size_t len) {
  * @return data in hex format
  */
 inline std::string to_hex(const std::string& data) {
-    return to_hex(reinterpret_cast<const unsigned char*> (data.c_str()), data.length());
+    auto src = sl::io::string_source(data);
+    auto sink = sl::io::string_sink();
+    sl::io::copy_to_hex(src, sink);
+    return sink.get_string();
 }
 
 /**
@@ -108,27 +105,15 @@ inline std::string to_hex(const std::string& data) {
  */
 
 inline std::string from_hex(const std::string& hex_data) {
-    std::string res;
-    std::array<char, 3> buf;
-    buf[2] = '\0';
-    size_t i = 0;
+    size_t offset = 0;
     if (hex_data.length() > 2 && '0' == hex_data[0] &&
             ('x' == hex_data[1] || 'X' == hex_data[1])) {
-        i += 2;
+        offset += 2;
     }
-    for (; i < hex_data.length(); i += 2) {
-        buf[0] = hex_data[i];
-        buf[1] = hex_data[i + 1];
-        char* end = nullptr;
-        errno = 0;
-        char byte = static_cast<char> (strtol(buf.data(), std::addressof(end), 16));
-        if (errno == ERANGE || end != buf.data() + 2) {
-            res = "";
-            break;
-        }
-        res.push_back(byte);
-    }
-    return res;
+    auto src = sl::io::array_source(hex_data.data() + offset, hex_data.size() - offset);
+    auto sink = sl::io::string_sink();
+    sl::io::copy_from_hex(src, sink);
+    return sink.get_string();
 }
 
 } // namespace
