@@ -67,7 +67,7 @@ before_script:
   - git clone https://github.com/staticlibs/staticlib_io.git
   - rm -rf test
   - mkdir test
-  - cp -r staticlib_crypto/test/certificates test/
+  - cp -r staticlib_crypto/test/certificate test/
 
 script:
   - mkdir build
@@ -93,7 +93,7 @@ script:
     $D cat /etc/fedora-release ;
     $D cmake /src/staticlib_crypto/test -DCMAKE_BUILD_TYPE=Release ;
     $D mkdir /test ;
-    $D cp -r /src/staticlib_crypto/test/certificates /test/ ;
+    $D cp -r /src/staticlib_crypto/test/certificate /test/ ;
     $D make all test ;
 
     fi

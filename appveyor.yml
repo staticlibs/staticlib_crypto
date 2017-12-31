@@ -33,7 +33,7 @@ install:
   - git clone https://github.com/staticlibs/staticlib_support.git
   - git clone https://github.com/staticlibs/staticlib_io.git
   - mkdir test
-  - robocopy staticlib_crypto\test\certificates test\certificates /e /ndl /njh /njs /nc /ns /np || true
+  - robocopy staticlib_crypto\test\certificate test\certificate /e /ndl /njh /njs /nc /ns /np || true
 
 build: off
 
