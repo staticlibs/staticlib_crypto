@@ -22,7 +22,7 @@
  */
 
 #ifndef STATICLIB_CRYPTO_CRYPTO_UTILS_HPP
-#define	STATICLIB_CRYPTO_CRYPTO_UTILS_HPP
+#define STATICLIB_CRYPTO_CRYPTO_UTILS_HPP
 
 #include <string>
 #include <utility>
@@ -119,5 +119,5 @@ inline std::string from_hex(const std::string& hex_data) {
 } // namespace
 }
 
-#endif	/* STATICLIB_CRYPTO_CRYPTO_UTILS_HPP */
+#endif /* STATICLIB_CRYPTO_CRYPTO_UTILS_HPP */
 

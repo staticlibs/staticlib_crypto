@@ -22,7 +22,7 @@
  */
 
 #ifndef STATICLIB_CRYPTO_DIGEST_VERIFY_SOURCE_HPP
-#define	STATICLIB_CRYPTO_DIGEST_VERIFY_SOURCE_HPP
+#define STATICLIB_CRYPTO_DIGEST_VERIFY_SOURCE_HPP
 
 #include <ios>
 #include <memory>
@@ -244,5 +244,5 @@ digest_verify_source<staticlib::io::reference_source<Source>> make_digest_verify
 }
 
 
-#endif	/* STATICLIB_CRYPTO_DIGEST_VERIFY_SOURCE_HPP */
+#endif /* STATICLIB_CRYPTO_DIGEST_VERIFY_SOURCE_HPP */
 

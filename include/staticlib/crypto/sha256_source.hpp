@@ -22,7 +22,7 @@
  */
 
 #ifndef STATICLIB_CRYPTO_SHA256_SOURCE_HPP
-#define	STATICLIB_CRYPTO_SHA256_SOURCE_HPP
+#define STATICLIB_CRYPTO_SHA256_SOURCE_HPP
 
 #include <array>
 #include <ios>
@@ -196,5 +196,5 @@ sha256_source<staticlib::io::reference_source<Source>> make_sha256_source(Source
 } // namespace
 }
 
-#endif	/* STATICLIB_CRYPTO_SHA256_SOURCE_HPP */
+#endif /* STATICLIB_CRYPTO_SHA256_SOURCE_HPP */
 

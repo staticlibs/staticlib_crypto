@@ -22,7 +22,7 @@
  */
 
 #ifndef STATICLIB_CRYPTO_SHA256_SINK_HPP
-#define	STATICLIB_CRYPTO_SHA256_SINK_HPP
+#define STATICLIB_CRYPTO_SHA256_SINK_HPP
 
 #include <array>
 #include <ios>
@@ -210,5 +210,5 @@ sha256_sink<staticlib::io::reference_sink<Sink>> make_sha256_sink(Sink& sink) {
 } // namespace
 }
 
-#endif	/* STATICLIB_CRYPTO_SHA256_SINK_HPP */
+#endif /* STATICLIB_CRYPTO_SHA256_SINK_HPP */
 

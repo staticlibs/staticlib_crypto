@@ -22,7 +22,7 @@
  */
 
 #ifndef STATICLIB_CRYPTO_DIGEST_SIGN_SOURCE_HPP
-#define	STATICLIB_CRYPTO_DIGEST_SIGN_SOURCE_HPP
+#define STATICLIB_CRYPTO_DIGEST_SIGN_SOURCE_HPP
 
 #include <ios>
 #include <memory>
@@ -236,5 +236,5 @@ digest_sign_source<staticlib::io::reference_source<Source>> make_digest_sign_sou
 } // namespace
 }
 
-#endif	/* STATICLIB_CRYPTO_DIGEST_SIGN_SOURCE_HPP */
+#endif /* STATICLIB_CRYPTO_DIGEST_SIGN_SOURCE_HPP */
 

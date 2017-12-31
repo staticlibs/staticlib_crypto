@@ -22,7 +22,7 @@
  */
 
 #ifndef STATICLIB_CRYPTO_HPP
-#define	STATICLIB_CRYPTO_HPP
+#define STATICLIB_CRYPTO_HPP
 
 #include "staticlib/config.hpp"
 
@@ -32,5 +32,5 @@
 #include "staticlib/crypto/sha256_sink.hpp"
 #include "staticlib/crypto/sha256_source.hpp"
 
-#endif	/* STATICLIB_CRYPTO_HPP */
+#endif /* STATICLIB_CRYPTO_HPP */
 

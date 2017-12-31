@@ -1,6 +1,9 @@
 Staticlibs Crypto library
 =========================
 
+[![travis](https://travis-ci.org/staticlibs/staticlib_crypto.svg?branch=master)](https://travis-ci.org/staticlibs/staticlib_crypto)
+[![appveyor](https://ci.appveyor.com/api/projects/status/github/staticlibs/staticlib_crypto?svg=true)](https://ci.appveyor.com/project/staticlibs/staticlib-crypto)
+
 This project is a part of [Staticlibs](http://staticlibs.net/).
 
 This project contains crypto-related utilities based on [OpenSSL](https://www.openssl.org/).
@@ -17,6 +20,11 @@ This project is released under the [Apache License 2.0](http://www.apache.org/li
 
 Changelog
 ---------
+
+**2017-12-31**
+
+ * version 0.5.3
+ * vs2017 support
 
 **2016-07-16**
  * version 0.5.2
