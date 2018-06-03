@@ -1,5 +1,5 @@
 /*
- * Copyright 2016, alex at staticlibs.net
+ * Copyright 2018, alex at staticlibs.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
  * File:   sha1_sink_test.cpp
  * Author: alex
  *
- * Created on February 6, 2016, 6:47 PM
+ * Created on June 3, 2018, 4:50 PM
  */
 
 #include "staticlib/crypto/sha1_sink.hpp"

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016, alex at staticlibs.net
+ * Copyright 2018, alex at staticlibs.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 
 /* 
- * File:   sha256_source.hpp
+ * File:   sha1_source.hpp
  * Author: alex
  *
- * Created on February 6, 2016, 6:45 PM
+ * Created on June 3, 2018, 4:46 PM
  */
 
-#ifndef STATICLIB_CRYPTO_SHA256_SOURCE_HPP
-#define STATICLIB_CRYPTO_SHA256_SOURCE_HPP
+#ifndef STATICLIB_CRYPTO_SHA1_SOURCE_HPP
+#define STATICLIB_CRYPTO_SHA1_SOURCE_HPP
 
 #include <array>
 #include <ios>
@@ -41,10 +41,10 @@ namespace staticlib {
 namespace crypto {
 
 /**
- * Source wrapper that computes SHA-256 hash sum of the data read through it
+ * Source wrapper that computes SHA-1 hash sum of the data read through it
  */
 template<typename Source>
-class sha256_source {
+class sha1_source {
     /**
      * Input source
      */
@@ -52,7 +52,7 @@ class sha256_source {
     /**
      * Hash sum computation context
      */
-    std::unique_ptr<SHA256_CTX> ctx;
+    std::unique_ptr<SHA_CTX> ctx;
     /**
      * Computed hash
      */
@@ -65,12 +65,12 @@ public:
      * 
      * @param src input source
      */
-    sha256_source(Source&& src) :
+    sha1_source(Source&& src) :
     src(std::move(src)) {
-        ctx = std::unique_ptr<SHA256_CTX>(new SHA256_CTX());
-        auto err = SHA256_Init(ctx.get());
+        ctx = std::unique_ptr<SHA_CTX>(new SHA_CTX());
+        auto err = SHA1_Init(ctx.get());
         if (1 != err) throw crypto_exception(TRACEMSG(
-                "'SHA256_Init' error, code: [" + sl::support::to_string(err) + "]"));
+                "'SHA1_Init' error, code: [" + sl::support::to_string(err) + "]"));
     }
 
     /**
@@ -78,7 +78,7 @@ public:
      * 
      * @param other instance
      */
-    sha256_source(const sha256_source&) = delete;
+    sha1_source(const sha1_source&) = delete;
 
     /**
      * Deleted copy assignment operator
@@ -86,14 +86,14 @@ public:
      * @param other instance
      * @return this instance 
      */
-    sha256_source& operator=(const sha256_source&) = delete;
+    sha1_source& operator=(const sha1_source&) = delete;
 
     /**
      * Move constructor
      * 
      * @param other other instance
      */
-    sha256_source(sha256_source&& other) :
+    sha1_source(sha1_source&& other) :
     src(std::move(other.src)),
     ctx(std::move(other.ctx)),
     hash(std::move(other.hash)) { }
@@ -104,7 +104,7 @@ public:
      * @param other other instance
      * @return this instance
      */
-    sha256_source& operator=(sha256_source&& other) {
+    sha1_source& operator=(sha1_source&& other) {
         src = std::move(other.src);
         ctx = std::move(other.ctx);
         hash = std::move(other.hash);
@@ -121,9 +121,9 @@ public:
     std::streamsize read(sl::io::span<char> span) {
         std::streamsize res = src.read(span);
         if (res > 0) {
-            auto err = SHA256_Update(ctx.get(), span.data(), static_cast<size_t>(res));
+            auto err = SHA1_Update(ctx.get(), span.data(), static_cast<size_t>(res));
             if (1 != err) throw crypto_exception(TRACEMSG(
-                    "'SHA256_Update' error, code: [" + sl::support::to_string(err) + "]"));
+                    "'SHA1_Update' error, code: [" + sl::support::to_string(err) + "]"));
         }
         return res;
     }
@@ -135,10 +135,10 @@ public:
      */
     const std::string& get_hash() {
         if (hash.empty()) {
-            std::array<unsigned char, SHA256_DIGEST_LENGTH> buf;
-            auto err = SHA256_Final(buf.data(), ctx.get());
+            std::array<unsigned char, SHA_DIGEST_LENGTH> buf;
+            auto err = SHA1_Final(buf.data(), ctx.get());
             if (1 != err) throw crypto_exception(TRACEMSG(
-                    "'SHA256_Final' error, code: [" + sl::support::to_string(err) + "]"));
+                    "'SHA1_Final' error, code: [" + sl::support::to_string(err) + "]"));
             auto src = sl::io::array_source(reinterpret_cast<const char*>(buf.data()), buf.size());
             auto dest = sl::io::string_sink();
             auto sink = sl::io::make_hex_sink(dest);
@@ -159,33 +159,33 @@ public:
 };
 
 /**
- * Factory function for creating SHA-256 sources,
+ * Factory function for creating SHA-1 sources,
  * created source wrapper will own specified source
  * 
  * @param source input source
- * @return SHA-256 source
+ * @return SHA-1 source
  */
 template <typename Source,
 class = typename std::enable_if<!std::is_lvalue_reference<Source>::value>::type>
-sha256_source<Source> make_sha256_source(Source&& source) {
-    return sha256_source<Source>(std::move(source));
+sha1_source<Source> make_sha1_source(Source&& source) {
+    return sha1_source<Source>(std::move(source));
 }
 
 /**
- * Factory function for creating SHA-256 sources,
+ * Factory function for creating SHA-1 sources,
  * created source wrapper will NOT own specified source
  * 
  * @param source input source
- * @return SHA-256 source
+ * @return SHA-1 source
  */
 template <typename Source>
-sha256_source<staticlib::io::reference_source<Source>> make_sha256_source(Source& source) {
-    return sha256_source<staticlib::io::reference_source<Source>>(
+sha1_source<staticlib::io::reference_source<Source>> make_sha1_source(Source& source) {
+    return sha1_source<staticlib::io::reference_source<Source>>(
             staticlib::io::make_reference_source(source));
 }
 
 } // namespace
 }
 
-#endif /* STATICLIB_CRYPTO_SHA256_SOURCE_HPP */
+#endif /* STATICLIB_CRYPTO_SHA1_SOURCE_HPP */
 

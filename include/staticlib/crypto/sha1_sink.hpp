@@ -1,5 +1,5 @@
 /*
- * Copyright 2016, alex at staticlibs.net
+ * Copyright 2018, alex at staticlibs.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 
 /* 
- * File:   sha256_source.hpp
+ * File:   sha1_sink.hpp
  * Author: alex
  *
- * Created on February 6, 2016, 6:45 PM
+ * Created on June 3, 2018, 4:43 PM
  */
 
-#ifndef STATICLIB_CRYPTO_SHA256_SOURCE_HPP
-#define STATICLIB_CRYPTO_SHA256_SOURCE_HPP
+#ifndef STATICLIB_CRYPTO_SHA1_SINK_HPP
+#define STATICLIB_CRYPTO_SHA1_SINK_HPP
 
 #include <array>
 #include <ios>
@@ -41,36 +41,37 @@ namespace staticlib {
 namespace crypto {
 
 /**
- * Source wrapper that computes SHA-256 hash sum of the data read through it
+ * Sink wrapper that computer SHA-1 hash sum of the data written through it
  */
-template<typename Source>
-class sha256_source {
+template<typename Sink>
+class sha1_sink {
     /**
-     * Input source
+     * Destination sink
      */
-    Source src;
+    Sink sink;
     /**
      * Hash sum computation context
      */
-    std::unique_ptr<SHA256_CTX> ctx;
+    std::unique_ptr<SHA_CTX> ctx;
     /**
      * Computed hash
      */
     std::string hash;
 
 public:
+
     /**
      * Constructor,
-     * created source wrapper will own specified source
+     * created sink wrapper will own specified sink
      * 
-     * @param src input source
+     * @param sink destination sink
      */
-    sha256_source(Source&& src) :
-    src(std::move(src)) {
-        ctx = std::unique_ptr<SHA256_CTX>(new SHA256_CTX());
-        auto err = SHA256_Init(ctx.get());
+    sha1_sink(Sink&& sink) :
+    sink(std::move(sink)) {
+        ctx = std::unique_ptr<SHA_CTX>(new SHA_CTX());
+        auto err = SHA1_Init(ctx.get());
         if (1 != err) throw crypto_exception(TRACEMSG(
-                "'SHA256_Init' error, code: [" + sl::support::to_string(err) + "]"));
+                "'SHA1_Init' error, code: [" + sl::support::to_string(err) + "]"));
     }
 
     /**
@@ -78,7 +79,7 @@ public:
      * 
      * @param other instance
      */
-    sha256_source(const sha256_source&) = delete;
+    sha1_sink(const sha1_sink&) = delete;
 
     /**
      * Deleted copy assignment operator
@@ -86,15 +87,15 @@ public:
      * @param other instance
      * @return this instance 
      */
-    sha256_source& operator=(const sha256_source&) = delete;
+    sha1_sink& operator=(const sha1_sink&) = delete;
 
     /**
      * Move constructor
      * 
      * @param other other instance
      */
-    sha256_source(sha256_source&& other) :
-    src(std::move(other.src)),
+    sha1_sink(sha1_sink&& other) :
+    sink(std::move(other.sink)),
     ctx(std::move(other.ctx)),
     hash(std::move(other.hash)) { }
 
@@ -104,28 +105,37 @@ public:
      * @param other other instance
      * @return this instance
      */
-    sha256_source& operator=(sha256_source&& other) {
-        src = std::move(other.src);
+    sha1_sink& operator=(sha1_sink&& other) {
+        sink = std::move(other.sink);
         ctx = std::move(other.ctx);
         hash = std::move(other.hash);
         return *this;
     }
 
     /**
-     * Counting read implementation
+     * Counting write implementation
      * 
-     * @param buffer output buffer
+     * @param buffer source buffer
      * @param length number of bytes to process
      * @return number of bytes processed
      */
-    std::streamsize read(sl::io::span<char> span) {
-        std::streamsize res = src.read(span);
+    std::streamsize write(sl::io::span<const char> span) {
+        std::streamsize res = sink.write(span);
         if (res > 0) {
-            auto err = SHA256_Update(ctx.get(), span.data(), static_cast<size_t>(res));
+            auto err = SHA1_Update(ctx.get(), span.data(), static_cast<size_t>(res));
             if (1 != err) throw crypto_exception(TRACEMSG(
-                    "'SHA256_Update' error, code: [" + sl::support::to_string(err) + "]"));
+                    "'SHA1_Update' error, code: [" + sl::support::to_string(err) + "]"));
         }
         return res;
+    }
+
+    /**
+     * Flushes destination sink
+     * 
+     * @return number of bytes flushed
+     */
+    std::streamsize flush() {
+        return sink.flush();
     }
 
     /**
@@ -135,10 +145,10 @@ public:
      */
     const std::string& get_hash() {
         if (hash.empty()) {
-            std::array<unsigned char, SHA256_DIGEST_LENGTH> buf;
-            auto err = SHA256_Final(buf.data(), ctx.get());
+            std::array<unsigned char, SHA_DIGEST_LENGTH> buf;
+            auto err = SHA1_Final(buf.data(), ctx.get());
             if (1 != err) throw crypto_exception(TRACEMSG(
-                    "'SHA256_Final' error, code: [" + sl::support::to_string(err) + "]"));
+                    "'SHA1_Final' error, code: [" + sl::support::to_string(err) + "]"));
             auto src = sl::io::array_source(reinterpret_cast<const char*>(buf.data()), buf.size());
             auto dest = sl::io::string_sink();
             auto sink = sl::io::make_hex_sink(dest);
@@ -149,43 +159,43 @@ public:
     }
 
     /**
-     * Underlying source accessor
+     * Underlying sink accessor
      * 
-     * @return underlying source reference
+     * @return underlying sink reference
      */
-    Source& get_source() {
-        return src;
+    Sink& get_sink() {
+        return sink;
     }
 };
 
 /**
- * Factory function for creating SHA-256 sources,
- * created source wrapper will own specified source
+ * Factory function for creating counting sinks,
+ * created sink wrapper will own specified sink
  * 
- * @param source input source
- * @return SHA-256 source
+ * @param sink destination sink
+ * @return counting sink
  */
-template <typename Source,
-class = typename std::enable_if<!std::is_lvalue_reference<Source>::value>::type>
-sha256_source<Source> make_sha256_source(Source&& source) {
-    return sha256_source<Source>(std::move(source));
+template <typename Sink,
+class = typename std::enable_if<!std::is_lvalue_reference<Sink>::value>::type>
+sha1_sink<Sink> make_sha1_sink(Sink&& sink) {
+    return sha1_sink<Sink>(std::move(sink));
 }
 
 /**
- * Factory function for creating SHA-256 sources,
- * created source wrapper will NOT own specified source
+ * Factory function for creating counting sinks,
+ * created sink wrapper will NOT own specified sink
  * 
- * @param source input source
- * @return SHA-256 source
+ * @param sink destination sink
+ * @return counting sink
  */
-template <typename Source>
-sha256_source<staticlib::io::reference_source<Source>> make_sha256_source(Source& source) {
-    return sha256_source<staticlib::io::reference_source<Source>>(
-            staticlib::io::make_reference_source(source));
+template <typename Sink>
+sha1_sink<staticlib::io::reference_sink<Sink>> make_sha1_sink(Sink& sink) {
+    return sha1_sink<staticlib::io::reference_sink<Sink>>(
+            staticlib::io::make_reference_sink(sink));
 }
 
 } // namespace
 }
 
-#endif /* STATICLIB_CRYPTO_SHA256_SOURCE_HPP */
+#endif /* STATICLIB_CRYPTO_SHA1_SINK_HPP */
 

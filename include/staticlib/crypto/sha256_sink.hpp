@@ -32,10 +32,10 @@
 #include "openssl/sha.h"
 
 #include "staticlib/config.hpp"
-#include "staticlib/io/span.hpp"
-#include "staticlib/io/reference_sink.hpp"
+#include "staticlib/io.hpp"
+#include "staticlib/support.hpp"
 
-#include "staticlib/crypto/crypto_utils.hpp"
+#include "staticlib/crypto/crypto_exception.hpp"
 
 namespace staticlib {
 namespace crypto {
@@ -54,11 +54,7 @@ class sha256_sink {
      */
     std::unique_ptr<SHA256_CTX> ctx;
     /**
-     * OpenSSL error code
-     */
-    int error;
-    /**
-     * Computed hash    
+     * Computed hash
      */
     std::string hash;
 
@@ -72,8 +68,10 @@ public:
      */
     sha256_sink(Sink&& sink) :
     sink(std::move(sink)) {
-        ctx = std::unique_ptr<SHA256_CTX>(new SHA256_CTX);
-        error = SHA256_Init(ctx.get());
+        ctx = std::unique_ptr<SHA256_CTX>(new SHA256_CTX());
+        auto err = SHA256_Init(ctx.get());
+        if (1 != err) throw crypto_exception(TRACEMSG(
+                "'SHA256_Init' error, code: [" + sl::support::to_string(err) + "]"));
     }
 
     /**
@@ -99,7 +97,6 @@ public:
     sha256_sink(sha256_sink&& other) :
     sink(std::move(other.sink)),
     ctx(std::move(other.ctx)),
-    error(other.error),
     hash(std::move(other.hash)) { }
 
     /**
@@ -111,7 +108,6 @@ public:
     sha256_sink& operator=(sha256_sink&& other) {
         sink = std::move(other.sink);
         ctx = std::move(other.ctx);
-        error = other.error;
         hash = std::move(other.hash);
         return *this;
     }
@@ -124,15 +120,13 @@ public:
      * @return number of bytes processed
      */
     std::streamsize write(sl::io::span<const char> span) {
-        if (1 == error) {
-            std::streamsize res = sink.write(span);
-            if (res > 0) {
-                SHA256_Update(ctx.get(), span.data(), static_cast<size_t>(res));
-            }
-            return res;
-        } else {
-            return span.size_signed();
+        std::streamsize res = sink.write(span);
+        if (res > 0) {
+            auto err = SHA256_Update(ctx.get(), span.data(), static_cast<size_t>(res));
+            if (1 != err) throw crypto_exception(TRACEMSG(
+                    "'SHA256_Update' error, code: [" + sl::support::to_string(err) + "]"));
         }
+        return res;
     }
 
     /**
@@ -140,12 +134,8 @@ public:
      * 
      * @return number of bytes flushed
      */
-    std::streamsize flush() {       
-        if (1 == error) {
-            return sink.flush();
-        } else {
-            return 0;
-        }
+    std::streamsize flush() {
+        return sink.flush();
     }
 
     /**
@@ -154,10 +144,16 @@ public:
      * @return computed hash sum
      */
     const std::string& get_hash() {
-        if (1 == error && hash.empty()) {
+        if (hash.empty()) {
             std::array<unsigned char, SHA256_DIGEST_LENGTH> buf;
-            SHA256_Final(buf.data(), ctx.get());
-            hash = to_hex(buf.data(), buf.size());
+            auto err = SHA256_Final(buf.data(), ctx.get());
+            if (1 != err) throw crypto_exception(TRACEMSG(
+                    "'SHA256_Final' error, code: [" + sl::support::to_string(err) + "]"));
+            auto src = sl::io::array_source(reinterpret_cast<const char*>(buf.data()), buf.size());
+            auto dest = sl::io::string_sink();
+            auto sink = sl::io::make_hex_sink(dest);
+            sl::io::copy_all(src, sink);
+            hash = std::move(dest.get_string());
         }
         return hash;
     }
@@ -170,23 +166,14 @@ public:
     Sink& get_sink() {
         return sink;
     }
-
-    /**
-     * Whether error happened during processing
-     * 
-     * @return whether error happened during processing
-     */
-    bool is_bogus() {
-        return 1 != error;
-    }
 };
 
 /**
- * Factory function for creating counting sinks,
+ * Factory function for creating SHA-256 sinks,
  * created sink wrapper will own specified sink
  * 
  * @param sink destination sink
- * @return counting sink
+ * @return SHA-256 sink
  */
 template <typename Sink,
 class = typename std::enable_if<!std::is_lvalue_reference<Sink>::value>::type>
@@ -195,11 +182,11 @@ sha256_sink<Sink> make_sha256_sink(Sink&& sink) {
 }
 
 /**
- * Factory function for creating counting sinks,
+ * Factory function for creating SHA-256 sinks,
  * created sink wrapper will NOT own specified sink
  * 
  * @param sink destination sink
- * @return counting sink
+ * @return SHA-256 sink
  */
 template <typename Sink>
 sha256_sink<staticlib::io::reference_sink<Sink>> make_sha256_sink(Sink& sink) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016, alex at staticlibs.net
+ * Copyright 2018, alex at staticlibs.net
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  */
 
 /* 
- * File:   sha1_sink_test.cpp
+ * File:   sha1_source_test.cpp
  * Author: alex
  *
- * Created on February 6, 2016, 6:47 PM
+ * Created on June 3, 2018, 4:51 PM
  */
 
-#include "staticlib/crypto/sha1_sink.hpp"
+#include "staticlib/crypto/sha256_source.hpp"
 
 #include <array>
 #include <iostream>
@@ -30,12 +30,12 @@
 #include "staticlib/io.hpp"
 
 void test_hash() {
-    sl::io::string_source src{"foo42\n"};
-    auto sink = sl::crypto::make_sha1_sink(sl::io::string_sink{});
+    auto src = sl::crypto::make_sha256_source(sl::io::string_source("foo42\n"));
+    auto sink = sl::io::string_sink();
     std::array<char, 2> buf;
     sl::io::copy_all(src, sink, buf);
-    
-    slassert("36237c8404b36a617a141504240189b8dd4dba28" == sink.get_hash());
+
+    slassert("ee41b4f1a590fae151736f09890dbd98d0707421ad84fa25afe89e1e30006009" == src.get_hash());
 }
 
 int main() {

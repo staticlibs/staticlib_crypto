@@ -26,9 +26,11 @@
 
 #include "staticlib/config.hpp"
 
-#include "staticlib/crypto/crypto_utils.hpp"
+#include "staticlib/crypto/crypto_exception.hpp"
 #include "staticlib/crypto/digest_sign_source.hpp"
 #include "staticlib/crypto/digest_verify_source.hpp"
+#include "staticlib/crypto/sha1_sink.hpp"
+#include "staticlib/crypto/sha1_source.hpp"
 #include "staticlib/crypto/sha256_sink.hpp"
 #include "staticlib/crypto/sha256_source.hpp"
 

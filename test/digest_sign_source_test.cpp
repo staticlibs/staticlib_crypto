@@ -44,7 +44,6 @@ const std::string KEY_PASSWORD = "test";
 
 void test_sign() {
     auto src = sl::crypto::make_digest_sign_source(sl::io::string_source(TEXT), KEY_PATH, KEY_PASSWORD);
-    slassert(!src.is_bogus());
     auto sink = sl::io::string_sink();
     std::array<char, 2> buf;
     sl::io::copy_all(src, sink, buf);

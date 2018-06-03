@@ -29,16 +29,16 @@
 #include <string>
 
 #include "openssl/bio.h"
-#include <openssl/err.h>
+#include "openssl/err.h"
 #include "openssl/evp.h"
 #include "openssl/pem.h"
 #include "openssl/x509.h"
 
 #include "staticlib/config.hpp"
-#include "staticlib/io/span.hpp"
-#include "staticlib/io/reference_source.hpp"
+#include "staticlib/support.hpp"
+#include "staticlib/io.hpp"
 
-#include "staticlib/crypto/crypto_utils.hpp"
+#include "staticlib/crypto/crypto_exception.hpp"
 
 namespace staticlib {
 namespace crypto {
@@ -59,15 +59,11 @@ class digest_verify_source {
     /**
      * Verify computation context
      */
-    std::unique_ptr<EVP_MD_CTX, detail::EVP_MD_CTX_Deleter> ctx;
-    /**
-     * OpenSSL error code
-     */
-    int error;
+    std::unique_ptr<EVP_MD_CTX, std::function<void(EVP_MD_CTX*)>> ctx;
     /**
      * Signature valid flag
      */
-    bool signature_valid = false;
+    sl::support::tribool signature_valid = sl::support::indeterminate;
 
 public:
 
@@ -80,37 +76,47 @@ public:
     digest_verify_source(Source&& src, const std::string& cert_path, const std::string& signature_hex,
             const std::string& digest_name = "SHA256") :
     src(std::move(src)),
-    signature(from_hex(signature_hex)) {
-        ctx = std::unique_ptr<EVP_MD_CTX, detail::EVP_MD_CTX_Deleter>(EVP_MD_CTX_create(), detail::EVP_MD_CTX_Deleter());
-        if (nullptr == ctx.get()) {
-            error = -1;
-            return;
-        }
+    signature(sl::io::string_from_hex(signature_hex)) {
+        ctx = std::unique_ptr<EVP_MD_CTX, std::function<void(EVP_MD_CTX*)>>(EVP_MD_CTX_create(),
+                [] (EVP_MD_CTX* ctx) {
+                    EVP_MD_CTX_destroy(ctx);
+                });
+        if (nullptr == ctx.get()) throw crypto_exception(TRACEMSG(
+                "'EVP_MD_CTX_create' error"));
         auto md = EVP_get_digestbyname(digest_name.c_str());
-        if (nullptr == md) {
-            error = -1;
-            return;
-        }
-        error = EVP_DigestInit_ex(ctx.get(), md, nullptr);
-        if (1 != error) return;
+        if (nullptr == md) throw crypto_exception(TRACEMSG(
+                "'EVP_get_digestbyname' error, name: [" + digest_name + "]"));
+        auto err_digest_init = EVP_DigestInit_ex(ctx.get(), md, nullptr);
+        if (1 != err_digest_init) throw crypto_exception(TRACEMSG(
+                "'EVP_DigestInit_ex' error, name: [" + digest_name + "]," + 
+                " code: [" + sl::support::to_string(err_digest_init) + "]"));
         // load cert
-        auto bio = std::unique_ptr<BIO, detail::BIO_Deleter>(BIO_new(BIO_s_file()), detail::BIO_Deleter());
-        error = BIO_read_filename(bio.get(), cert_path.c_str());
-        if (1 != error) return;
+        auto bio = BIO_new(BIO_s_file());
+        if (nullptr == bio) throw crypto_exception(TRACEMSG(
+                "'BIO_new(BIO_s_file)' error"));
+        auto deferred_bio = sl::support::defer([bio]() STATICLIB_NOEXCEPT {
+            BIO_free_all(bio);
+        });
+        auto err_read_filename = BIO_read_filename(bio, cert_path.c_str());
+        if (1 != err_read_filename) throw crypto_exception(TRACEMSG(
+                "'BIO_read_filename' error, path: [" + cert_path + "]," +
+                " code: [" + sl::support::to_string(err_read_filename) + "]"));
 
-        auto cert = std::unique_ptr<X509, detail::X509_Deleter>(PEM_read_bio_X509(bio.get(), 
-                nullptr, nullptr, nullptr), detail::X509_Deleter());
-        if (nullptr == cert.get()) {
-            error = -1;
-            return;
-        }
-        auto key = std::unique_ptr<EVP_PKEY, detail::EVP_PKEY_Deleter>(X509_get_pubkey(cert.get()), 
-                detail::EVP_PKEY_Deleter());
-        if (nullptr == key.get()) {
-            error = -1;
-            return;
-        }
-        error = EVP_DigestVerifyInit(ctx.get(), nullptr, md, nullptr, key.get());
+        auto cert = PEM_read_bio_X509(bio, nullptr, nullptr, nullptr);
+        if (nullptr == cert) throw crypto_exception(TRACEMSG(
+                "'PEM_read_bio_X509' error, path: [" + cert_path + "]"));
+        auto deferred_cert = sl::support::defer([cert]() STATICLIB_NOEXCEPT {
+            X509_free(cert);
+        });
+        auto key = X509_get_pubkey(cert);
+        if (nullptr == key) throw crypto_exception(TRACEMSG(
+                "'X509_get_pubkey' error, path: [" + cert_path + "]"));
+        auto deferred_key = sl::support::defer([key]() STATICLIB_NOEXCEPT {
+            EVP_PKEY_free(key);
+        });
+        auto err_init = EVP_DigestVerifyInit(ctx.get(), nullptr, md, nullptr, key);
+        if(1 != err_init) throw crypto_exception(TRACEMSG(
+                "'EVP_DigestVerifyInit' error, code: [" + sl::support::to_string(err_init) + "]"));
     }
 
     /**
@@ -137,7 +143,6 @@ public:
     src(std::move(other.src)),
     signature(std::move(other.signature)),
     ctx(std::move(other.ctx)),
-    error(other.error),
     signature_valid(other.signature_valid) { }
 
     /**
@@ -150,7 +155,6 @@ public:
         src = std::move(other.src);
         signature = std::move(other.signature);
         ctx = std::move(other.ctx);
-        error = other.error;
         signature_valid = other.signature_valid;
         return *this;
     }
@@ -163,17 +167,15 @@ public:
      * @return number of bytes processed
      */
     std::streamsize read(sl::io::span<char> span) {
-        if (1 == error) {
-            std::streamsize res = src.read(span);
-            if (res > 0) {
-                error = EVP_DigestVerifyUpdate(ctx.get(),
-                        reinterpret_cast<const unsigned char*> (span.data()), 
-                        static_cast<size_t> (res));
-            }
-            return 1 == error ? res : std::char_traits<char>::eof();
-        } else {
-            return std::char_traits<char>::eof();
+        std::streamsize res = src.read(span);
+        if (res > 0) {
+            auto err = EVP_DigestVerifyUpdate(ctx.get(),
+                    reinterpret_cast<const unsigned char*> (span.data()), 
+                    static_cast<size_t> (res));
+            if (1 != err) throw crypto_exception(TRACEMSG(
+                    "'EVP_DigestVerifyUpdate' error, code: [" + sl::support::to_string(err) + "]"));
         }
+        return res;
     }
 
     /**
@@ -182,14 +184,14 @@ public:
      * @return whether signature is valid
      */
     bool is_signature_valid() {
-        if (1 == error && !signature_valid) {
+        if (sl::support::indeterminate(signature_valid)) {
             ERR_clear_error();
-            error = EVP_DigestVerifyFinal(ctx.get(), 
+            auto err = EVP_DigestVerifyFinal(ctx.get(), 
                     reinterpret_cast<unsigned char*> (std::addressof(signature.front())),
                     signature.length());
-            signature_valid = (error == 1);
+            signature_valid = (err == 1);
         }
-        return signature_valid;
+        return true == signature_valid;
     }
 
     /**
@@ -201,14 +203,6 @@ public:
         return src;
     }
 
-    /**
-     * Whether error happened during processing
-     * 
-     * @return whether error happened during processing
-     */
-    bool is_bogus() {
-        return 1 != error;
-    }
 };
 
 /**

@@ -52,7 +52,6 @@ const std::string CERT_PATH = "../test/certificate/test.cer";
 
 void test_verify() {
     auto src = sl::crypto::make_digest_verify_source(sl::io::string_source(TEXT), CERT_PATH, SIGNATURE);
-    slassert(!src.is_bogus());
     auto sink = sl::io::string_sink();
     std::array<char, 2> buf;
     sl::io::copy_all(src, sink, buf);
@@ -62,7 +61,6 @@ void test_verify() {
 
 void test_verify_fail() {
     auto src = sl::crypto::make_digest_verify_source(sl::io::string_source(TEXT), CERT_PATH, SIGNATURE_FAIL);
-    slassert(!src.is_bogus());
     auto sink = sl::io::string_sink();
     std::array<char, 2> buf;
     sl::io::copy_all(src, sink, buf);

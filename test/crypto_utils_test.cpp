@@ -21,24 +21,60 @@
  * Created on July 16, 2016, 1:43 PM
  */
 
-#include "staticlib/crypto/crypto_utils.hpp"
-
 #include <iostream>
 
 #include "staticlib/config/assert.hpp"
 
-void test_hex() {
-    // hello in russian
-    std::string data = "\xd0\xbf\xd1\x80\xd0\xb8\xd0\xb2\xd0\xb5\xd1\x82";
-    std::cout << data << std::endl;
-    std::string hex = sl::crypto::to_hex(data);
-    std::cout << hex << std::endl;
-    slassert(data ==  sl::crypto::from_hex(hex));
+void test_base64() {
+    /*
+    BIO* b64 = BIO_new(BIO_f_base64());
+    BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
+
+    BIO* src = BIO_new(BIO_s_bio());
+    int err_src_buf_size = BIO_set_write_buf_size(src, 4096);
+    slassert(1 == err_src_buf_size);
+
+    BIO* pushed_bio = BIO_push(b64, src);
+    slassert(pushed_bio == b64);
+    
+    BIO* sink = BIO_new(BIO_s_bio());
+    int err_sink_buf_size = BIO_set_write_buf_size(sink, 4096);
+    slassert(1 == err_sink_buf_size);
+
+    int err_make_pair = BIO_make_bio_pair(src, sink);
+    slassert(1 == err_make_pair);
+
+    auto data = std::string("foobar\n");
+    for (size_t i = 0; i < 1; i++) {
+        auto allowed = BIO_get_write_guarantee(b64);
+        std::cout << allowed << std::endl;
+        auto written = BIO_write(b64, data.data(), data.size());
+        std::cout << written << std::endl;
+    }
+    auto err_flush = BIO_flush(b64);
+    slassert(1 == err_flush);
+
+    auto dest = std::string();
+    dest.resize(1024);
+    auto read = BIO_read(sink, std::addressof(dest.front()), dest.size());
+    std::cout << read << std::endl;
+    dest.resize(read);
+    std::cout << read << std::endl;
+    std::cout << "[" << dest << "]" << std::endl;
+
+
+    BIO_free(b64);
+    int err_destroy = BIO_destroy_bio_pair(src);
+    slassert(1 == err_destroy);
+    BIO_free(src);
+    BIO_free(sink);
+    */
 }
 
 int main() {
     try {
-        test_hex();
+        //test_hex();
+        test_base64();
     } catch (const std::exception& e) {
         std::cout << e.what() << std::endl;
         return 1;
