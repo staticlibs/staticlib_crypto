@@ -21,6 +21,11 @@ This project is released under the [Apache License 2.0](http://www.apache.org/li
 Changelog
 ---------
 
+**2018-06-04**
+
+ * version 1.0.0
+ * encryption, base64 and sha support
+
 **2018-02-28**
 
  * version 0.5.4

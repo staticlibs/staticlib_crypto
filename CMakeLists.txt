@@ -15,7 +15,7 @@
 cmake_minimum_required ( VERSION 2.8.12 )
 
 project ( staticlib_crypto CXX )
-set ( ${PROJECT_NAME}_STATICLIB_VERSION 0.5.4 )
+set ( ${PROJECT_NAME}_STATICLIB_VERSION 1.0.0 )
 set ( ${PROJECT_NAME}_DESCRIPTION "Staticlibs Crypto library" )
 set ( ${PROJECT_NAME}_URL https://github.com/staticlibs/staticlib_crypto )
 include ( ${CMAKE_CURRENT_LIST_DIR}/resources/macros.cmake )
