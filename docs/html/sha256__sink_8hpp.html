@@ -23,7 +23,7 @@
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td style="padding-left: 0.5em;">
    <div id="projectname">staticlib_crypto
-   &#160;<span id="projectnumber">0.5.3</span>
+   &#160;<span id="projectnumber">1.0.0</span>
    </div>
   </td>
  </tr>
@@ -96,11 +96,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <code>#include &lt;ios&gt;</code><br/>
 <code>#include &lt;memory&gt;</code><br/>
 <code>#include &lt;string&gt;</code><br/>
+<code>#include &quot;openssl/err.h&quot;</code><br/>
 <code>#include &quot;openssl/sha.h&quot;</code><br/>
 <code>#include &quot;staticlib/config.hpp&quot;</code><br/>
-<code>#include &quot;staticlib/io/span.hpp&quot;</code><br/>
-<code>#include &quot;staticlib/io/reference_sink.hpp&quot;</code><br/>
-<code>#include &quot;<a class="el" href="crypto__utils_8hpp_source.html">staticlib/crypto/crypto_utils.hpp</a>&quot;</code><br/>
+<code>#include &quot;staticlib/io.hpp&quot;</code><br/>
+<code>#include &quot;staticlib/support.hpp&quot;</code><br/>
+<code>#include &quot;<a class="el" href="crypto__exception_8hpp_source.html">staticlib/crypto/crypto_exception.hpp</a>&quot;</code><br/>
 </div>
 <p><a href="sha256__sink_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -118,17 +119,17 @@ Namespaces</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:ab60daf84af766365e7d5c3827ea051b9"><td class="memTemplParams" colspan="2">template&lt;typename Sink , class  = typename std::enable_if&lt;!std::is_lvalue_reference&lt;Sink&gt;::value&gt;::type&gt; </td></tr>
 <tr class="memitem:ab60daf84af766365e7d5c3827ea051b9"><td class="memTemplItemLeft" align="right" valign="top">sha256_sink&lt; Sink &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#ab60daf84af766365e7d5c3827ea051b9">staticlib::crypto::make_sha256_sink</a> (Sink &amp;&amp;sink)</td></tr>
-<tr class="memdesc:ab60daf84af766365e7d5c3827ea051b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating counting sinks, created sink wrapper will own specified sink.  <a href="#ab60daf84af766365e7d5c3827ea051b9"></a><br/></td></tr>
+<tr class="memdesc:ab60daf84af766365e7d5c3827ea051b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating SHA-256 sinks, created sink wrapper will own specified sink.  <a href="#ab60daf84af766365e7d5c3827ea051b9"></a><br/></td></tr>
 <tr class="memitem:abb627b1c2962fd5e5684591fbcabe046"><td class="memTemplParams" colspan="2">template&lt;typename Sink &gt; </td></tr>
 <tr class="memitem:abb627b1c2962fd5e5684591fbcabe046"><td class="memTemplItemLeft" align="right" valign="top">sha256_sink<br class="typebreak"/>
 &lt; staticlib::io::reference_sink<br class="typebreak"/>
 &lt; Sink &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacestaticlib_1_1crypto.html#abb627b1c2962fd5e5684591fbcabe046">staticlib::crypto::make_sha256_sink</a> (Sink &amp;sink)</td></tr>
-<tr class="memdesc:abb627b1c2962fd5e5684591fbcabe046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating counting sinks, created sink wrapper will NOT own specified sink.  <a href="#abb627b1c2962fd5e5684591fbcabe046"></a><br/></td></tr>
+<tr class="memdesc:abb627b1c2962fd5e5684591fbcabe046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory function for creating SHA-256 sinks, created sink wrapper will NOT own specified sink.  <a href="#abb627b1c2962fd5e5684591fbcabe046"></a><br/></td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 31 2017 17:30:54 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jun 4 2018 23:46:11 for staticlib_crypto by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.1.2
 </small></address>

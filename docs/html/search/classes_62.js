@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['bio_5fdeleter',['BIO_Deleter',['../classstaticlib_1_1crypto_1_1detail_1_1BIO__Deleter.html',1,'staticlib::crypto::detail']]]
+  ['base64_5fsink',['base64_sink',['../classstaticlib_1_1crypto_1_1base64__sink.html',1,'staticlib::crypto']]],
+  ['base64_5fsource',['base64_source',['../classstaticlib_1_1crypto_1_1base64__source.html',1,'staticlib::crypto']]]
 ];
