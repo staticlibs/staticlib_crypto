@@ -156,7 +156,7 @@ public:
      */
     std::streamsize read(sl::io::span<char> span) {
         // read buffered
-        int read_buffered = BIO_read(decrypter.get(), span.data(), span.size());
+        int read_buffered = BIO_read(decrypter.get(), span.data(), static_cast<int>(span.size_signed()));
         if (read_buffered > 0) {
             return static_cast<std::streamsize>(read_buffered);
         }
@@ -184,7 +184,7 @@ public:
                     " written: [" + sl::support::to_string(written) + "]," +
                     " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
             // read and return
-            int read_flushed = BIO_read(decrypter.get(), span.data(), span.size());
+            int read_flushed = BIO_read(decrypter.get(), span.data(), static_cast<int>(span.size_signed()));
             if (read_flushed < -1) throw crypto_exception(TRACEMSG(
                     "'BIO_read' error, read: [" + sl::support::to_string(read_flushed) + "]," +
                     " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
@@ -192,7 +192,7 @@ public:
             if (1 != read_status) throw crypto_exception(TRACEMSG(
                     "'BIO_get_cipher_status' error, read: [" + sl::support::to_string(read_flushed) + "]," +
                     " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
-            return read_flushed >= 0 ? static_cast<size_t>(read_flushed) : std::char_traits<char>::eof();
+            return read_flushed >= 0 ? static_cast<std::streamsize>(read_flushed) : std::char_traits<char>::eof();
         }
         auto written = BIO_write(bsrc.get(), buf.data(), static_cast<int>(read_from_src));
         if (written <= 0) throw crypto_exception(TRACEMSG(
@@ -212,7 +212,7 @@ public:
                     " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         }
         // read and return
-        int read_decoded = BIO_read(decrypter.get(), span.data(), span.size());
+        int read_decoded = BIO_read(decrypter.get(), span.data(), static_cast<int>(span.size_signed()));
         if (read_decoded < -1) throw crypto_exception(TRACEMSG(
                 "'BIO_read' error, return: [" + sl::support::to_string(read_decoded) + "]," +
                 " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
@@ -220,7 +220,7 @@ public:
         if (1 != read_status) throw crypto_exception(TRACEMSG(
                 "'BIO_get_cipher_status' error, read: [" + sl::support::to_string(read_decoded) + "]," +
                 " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
-        return read_decoded >= 0 ? static_cast<size_t>(read_decoded) : 0;
+        return read_decoded >= 0 ? static_cast<std::streamsize>(read_decoded) : 0;
     }
 
     /**

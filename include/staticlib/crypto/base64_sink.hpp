@@ -180,7 +180,7 @@ public:
             written += static_cast<size_t>(wr);
             // read and write to sink
             int read = 0;
-            while ((read = (BIO_read(bsink.get(), buf.data(), buf.size()))) > 0) {
+            while ((read = (BIO_read(bsink.get(), buf.data(), static_cast<int>(buf.size())))) > 0) {
                 sl::io::write_all(sink, {buf.data(), static_cast<size_t>(read)});
             }
             if (read < -1) throw crypto_exception(TRACEMSG(
@@ -202,7 +202,7 @@ public:
         // read and write to sink
         std::streamsize written = 0;
         int read = 0;
-        while ((read = (BIO_read(bsink.get(), buf.data(), buf.size()))) > 0) {
+        while ((read = (BIO_read(bsink.get(), buf.data(), static_cast<int>(buf.size())))) > 0) {
             written += read;
             sl::io::write_all(sink, {buf.data(), static_cast<size_t>(read)});
         }
