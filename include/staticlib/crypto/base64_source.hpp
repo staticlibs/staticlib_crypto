@@ -30,6 +30,7 @@
 #include <memory>
 
 #include "openssl/bio.h"
+#include "openssl/err.h"
 #include "openssl/evp.h"
 
 #include "staticlib/config.hpp"
@@ -74,27 +75,30 @@ public:
     bsrc(BIO_new(BIO_s_bio()), [](BIO* bio) { BIO_free(bio); }),
     bsink(BIO_new(BIO_s_bio()), [](BIO* bio) { BIO_free(bio); }) {
         if (nullptr == b64.get()) throw crypto_exception(TRACEMSG(
-                "'BIO_new(BIO_f_base64)' error"));
+                "'BIO_new(BIO_f_base64)' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         if (nullptr == bsrc.get() || nullptr == bsink.get()) throw crypto_exception(TRACEMSG(
-                "'BIO_new(BIO_s_bio)' error"));
+                "'BIO_new(BIO_s_bio)' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         // base64 format
         BIO_set_flags(b64.get(), BIO_FLAGS_BASE64_NO_NL);
         // source
         int err_src_buf_size = BIO_set_write_buf_size(bsrc.get(), buffer_size);
         if(1 != err_src_buf_size) throw crypto_exception(TRACEMSG(
-                "'BIO_set_write_buf_size' error, size: [" + sl::support::to_string(buffer_size) + "]"));
+                "'BIO_set_write_buf_size' error, size: [" + sl::support::to_string(buffer_size) + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         // sink
         int err_sink_buf_size = BIO_set_write_buf_size(bsink.get(), buffer_size);
         if(1 != err_sink_buf_size) throw crypto_exception(TRACEMSG(
-                "'BIO_set_write_buf_size' error, size: [" + sl::support::to_string(buffer_size) + "]"));
+                "'BIO_set_write_buf_size' error, size: [" + sl::support::to_string(buffer_size) + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         // chain
         BIO* pushed = BIO_push(b64.get(), bsink.get());
         if(pushed != b64.get()) throw crypto_exception(TRACEMSG(
-                "'BIO_push' error"));
+                "'BIO_push' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         // pair, BIO_s_mem may be used instead
         int err_pair = BIO_make_bio_pair(bsrc.get(), bsink.get());
         if (1 != err_pair) throw crypto_exception(TRACEMSG(
-                "'BIO_make_bio_pair' error, code: [" + sl::support::to_string(err_pair) + "]"));
+                "'BIO_make_bio_pair' error, code: [" + sl::support::to_string(err_pair) + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
     }
 
     /**
@@ -153,12 +157,14 @@ public:
             return static_cast<std::streamsize>(read_buffered);
         }
         if (read_buffered < -1) throw crypto_exception(TRACEMSG(
-                "'BIO_read' buffered error, return: [" + sl::support::to_string(read_buffered) + "]"));
+                "'BIO_read' buffered error, return: [" + sl::support::to_string(read_buffered) + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         // decode more data
         auto allowed = BIO_get_write_guarantee(bsrc.get());
         if (allowed <= 0) throw crypto_exception(TRACEMSG(
                 "'BIO_get_write_guarantee' write buffer overflow," +
-                " allowed: [" + sl::support::to_string(allowed) + "]"));
+                " allowed: [" + sl::support::to_string(allowed) + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         auto uallowed = static_cast<size_t>(allowed);
         size_t to_decode = uallowed <= buf.size() ? uallowed : buf.size();
         size_t read_from_src = sl::io::read_all(src, {buf.data(), to_decode});
@@ -166,27 +172,32 @@ public:
             // source exhausted
             auto err_flush = BIO_flush(bsrc.get());
             if (1 != err_flush) throw crypto_exception(TRACEMSG(
-                    "'BIO_flush' error, code: [" + sl::support::to_string(err_flush) + "]"));
+                    "'BIO_flush' error, code: [" + sl::support::to_string(err_flush) + "]," +
+                    " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
             // read and return
             int read_flushed = BIO_read(b64.get(), span.data(), span.size());
             if (read_flushed < -1) throw crypto_exception(TRACEMSG(
-                    "'BIO_read' error, return: [" + sl::support::to_string(read_flushed) + "]"));
+                    "'BIO_read' error, return: [" + sl::support::to_string(read_flushed) + "]," +
+                    " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
             return read_flushed >= 0 ? static_cast<size_t>(read_flushed) : std::char_traits<char>::eof();
         }
         auto written = BIO_write(bsrc.get(), buf.data(), static_cast<int>(read_from_src));
         if (written <= 0) throw crypto_exception(TRACEMSG(
                 "'BIO_write' error, to_write: [" + sl::support::to_string(read_from_src) + "]," +
-                " written: [" + sl::support::to_string(written) + "]"));
+                " written: [" + sl::support::to_string(written) + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         if (read_from_src < to_decode) {
             // source exhausted
             auto err_flush = BIO_flush(bsrc.get());
             if (1 != err_flush) throw crypto_exception(TRACEMSG(
-                    "'BIO_flush' error, code: [" + sl::support::to_string(err_flush) + "]"));
+                    "'BIO_flush' error, code: [" + sl::support::to_string(err_flush) + "]," +
+                    " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         }
         // read and return
         int read_decoded = BIO_read(b64.get(), span.data(), span.size());
         if (read_decoded < -1) throw crypto_exception(TRACEMSG(
-                "'BIO_read' error, return: [" + sl::support::to_string(read_decoded) + "]"));
+                "'BIO_read' error, return: [" + sl::support::to_string(read_decoded) + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         return read_decoded >= 0 ? static_cast<size_t>(read_decoded) : 0;
     }
 

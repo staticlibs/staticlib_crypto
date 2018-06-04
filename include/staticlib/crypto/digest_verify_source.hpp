@@ -82,41 +82,44 @@ public:
                     EVP_MD_CTX_destroy(ctx);
                 });
         if (nullptr == ctx.get()) throw crypto_exception(TRACEMSG(
-                "'EVP_MD_CTX_create' error"));
+                "'EVP_MD_CTX_create' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         auto md = EVP_get_digestbyname(digest_name.c_str());
         if (nullptr == md) throw crypto_exception(TRACEMSG(
-                "'EVP_get_digestbyname' error, name: [" + digest_name + "]"));
+                "'EVP_get_digestbyname' error, name: [" + digest_name + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         auto err_digest_init = EVP_DigestInit_ex(ctx.get(), md, nullptr);
         if (1 != err_digest_init) throw crypto_exception(TRACEMSG(
                 "'EVP_DigestInit_ex' error, name: [" + digest_name + "]," + 
-                " code: [" + sl::support::to_string(err_digest_init) + "]"));
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         // load cert
         auto bio = BIO_new(BIO_s_file());
         if (nullptr == bio) throw crypto_exception(TRACEMSG(
-                "'BIO_new(BIO_s_file)' error"));
+                "'BIO_new(BIO_s_file)' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         auto deferred_bio = sl::support::defer([bio]() STATICLIB_NOEXCEPT {
             BIO_free_all(bio);
         });
         auto err_read_filename = BIO_read_filename(bio, cert_path.c_str());
         if (1 != err_read_filename) throw crypto_exception(TRACEMSG(
                 "'BIO_read_filename' error, path: [" + cert_path + "]," +
-                " code: [" + sl::support::to_string(err_read_filename) + "]"));
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
 
         auto cert = PEM_read_bio_X509(bio, nullptr, nullptr, nullptr);
         if (nullptr == cert) throw crypto_exception(TRACEMSG(
-                "'PEM_read_bio_X509' error, path: [" + cert_path + "]"));
+                "'PEM_read_bio_X509' error, path: [" + cert_path + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         auto deferred_cert = sl::support::defer([cert]() STATICLIB_NOEXCEPT {
             X509_free(cert);
         });
         auto key = X509_get_pubkey(cert);
         if (nullptr == key) throw crypto_exception(TRACEMSG(
-                "'X509_get_pubkey' error, path: [" + cert_path + "]"));
+                "'X509_get_pubkey' error, path: [" + cert_path + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         auto deferred_key = sl::support::defer([key]() STATICLIB_NOEXCEPT {
             EVP_PKEY_free(key);
         });
         auto err_init = EVP_DigestVerifyInit(ctx.get(), nullptr, md, nullptr, key);
         if(1 != err_init) throw crypto_exception(TRACEMSG(
-                "'EVP_DigestVerifyInit' error, code: [" + sl::support::to_string(err_init) + "]"));
+                "'EVP_DigestVerifyInit' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
     }
 
     /**
@@ -173,7 +176,7 @@ public:
                     reinterpret_cast<const unsigned char*> (span.data()), 
                     static_cast<size_t> (res));
             if (1 != err) throw crypto_exception(TRACEMSG(
-                    "'EVP_DigestVerifyUpdate' error, code: [" + sl::support::to_string(err) + "]"));
+                    "'EVP_DigestVerifyUpdate' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         }
         return res;
     }

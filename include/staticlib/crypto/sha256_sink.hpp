@@ -29,6 +29,7 @@
 #include <memory>
 #include <string>
 
+#include "openssl/err.h"
 #include "openssl/sha.h"
 
 #include "staticlib/config.hpp"
@@ -71,7 +72,7 @@ public:
         ctx = std::unique_ptr<SHA256_CTX>(new SHA256_CTX());
         auto err = SHA256_Init(ctx.get());
         if (1 != err) throw crypto_exception(TRACEMSG(
-                "'SHA256_Init' error, code: [" + sl::support::to_string(err) + "]"));
+                "'SHA256_Init' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
     }
 
     /**
@@ -124,7 +125,7 @@ public:
         if (res > 0) {
             auto err = SHA256_Update(ctx.get(), span.data(), static_cast<size_t>(res));
             if (1 != err) throw crypto_exception(TRACEMSG(
-                    "'SHA256_Update' error, code: [" + sl::support::to_string(err) + "]"));
+                    "'SHA256_Update' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         }
         return res;
     }
@@ -148,7 +149,7 @@ public:
             std::array<unsigned char, SHA256_DIGEST_LENGTH> buf;
             auto err = SHA256_Final(buf.data(), ctx.get());
             if (1 != err) throw crypto_exception(TRACEMSG(
-                    "'SHA256_Final' error, code: [" + sl::support::to_string(err) + "]"));
+                    "'SHA256_Final' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
             auto dest = sl::io::string_sink();
             {
                 auto src = sl::io::array_source(reinterpret_cast<const char*>(buf.data()), buf.size());

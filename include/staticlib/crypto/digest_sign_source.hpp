@@ -30,6 +30,7 @@
 #include <string>
 
 #include "openssl/bio.h"
+#include "openssl/err.h"
 #include "openssl/evp.h"
 #include "openssl/pem.h"
 
@@ -75,10 +76,11 @@ public:
                     EVP_MD_CTX_destroy(ctx);
                 });
         if (nullptr == ctx.get()) throw crypto_exception(TRACEMSG(
-                "'EVP_MD_CTX_create' error"));
+                "'EVP_MD_CTX_create' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         auto md = EVP_get_digestbyname(digest_name.c_str());
         if (nullptr == md) throw crypto_exception(TRACEMSG(
-                "'EVP_get_digestbyname' error, name: [" + digest_name + "]"));
+                "'EVP_get_digestbyname' error, name: [" + digest_name + "]," +
+                " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         auto err_digest_init = EVP_DigestInit_ex(ctx.get(), md, nullptr);
         if (1 != err_digest_init) throw crypto_exception(TRACEMSG(
                 "'EVP_DigestInit_ex' error, name: [" + digest_name + "]," + 
@@ -86,7 +88,7 @@ public:
         // load key
         auto bio = BIO_new(BIO_s_file());
         if (nullptr == bio) throw crypto_exception(TRACEMSG(
-                "'BIO_new(BIO_s_file)' error"));
+                "'BIO_new(BIO_s_file)' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         auto deferred_bio = sl::support::defer([bio]() STATICLIB_NOEXCEPT {
             BIO_free_all(bio);
         });
@@ -98,13 +100,14 @@ public:
         void* pwdvoid = static_cast<void*> (std::addressof(pwd.front()));
         auto key = PEM_read_bio_PrivateKey(bio, nullptr, nullptr, pwdvoid);
         if (nullptr == key) throw crypto_exception(TRACEMSG(
-                "'PEM_read_bio_PrivateKey' error, path: [" + key_path + "]"));
+                "'PEM_read_bio_PrivateKey' error, path: [" + key_path + "]," +
+                " code: [" + sl::support::to_string(err_digest_init) + "]"));
         auto deferred_key = sl::support::defer([key]() STATICLIB_NOEXCEPT {
             EVP_PKEY_free(key);
         });
         auto err_init = EVP_DigestSignInit(ctx.get(), nullptr, md, nullptr, key);
         if(1 != err_init) throw crypto_exception(TRACEMSG(
-                "'EVP_DigestSignInit' error, code: [" + sl::support::to_string(err_init) + "]"));
+                "'EVP_DigestSignInit' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
     }
 
     /**
@@ -159,7 +162,7 @@ public:
                     reinterpret_cast<const unsigned char*> (span.data()), 
                     static_cast<size_t> (res));
             if (1 != err) throw crypto_exception(TRACEMSG(
-                    "'EVP_DigestSignUpdate' error, code: [" + sl::support::to_string(err) + "]"));
+                    "'EVP_DigestSignUpdate' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         }
         return res;
     }
@@ -174,7 +177,7 @@ public:
             size_t req = 0;
             auto err_req = EVP_DigestSignFinal(ctx.get(), nullptr, std::addressof(req));
             if (1 != err_req || req <= 0) throw crypto_exception(TRACEMSG(
-                    "'EVP_DigestSignFinal' req error, code: [" + sl::support::to_string(err_req) + "]," +
+                    "'EVP_DigestSignFinal' req error, code: [" + sl::support::to_string(ERR_get_error()) + "]," +
                     " req: [" + sl::support::to_string(req) + "]"));
             std::string sig;
             sig.resize(req);
@@ -182,7 +185,7 @@ public:
             auto err = EVP_DigestSignFinal(ctx.get(), reinterpret_cast<unsigned char*>(std::addressof(sig.front())),
                     std::addressof(slen));
             if (1 != err || req != slen) throw crypto_exception(TRACEMSG(
-                    "'EVP_DigestSignFinal' error, code: [" + sl::support::to_string(err) + "]," +
+                    "'EVP_DigestSignFinal' error, code: [" + sl::support::to_string(ERR_get_error()) + "]," +
                     " req: [" + sl::support::to_string(req) + "]," +
                     " slen: [" + sl::support::to_string(slen) + "]"));
             signature = sl::io::string_to_hex(sig);
