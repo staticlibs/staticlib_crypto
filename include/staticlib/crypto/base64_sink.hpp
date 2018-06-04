@@ -24,15 +24,19 @@
 #ifndef STATICLIB_CRYPTO_BASE64_SINK_HPP
 #define STATICLIB_CRYPTO_BASE64_SINK_HPP
 
+#include <array>
 #include <ios>
 #include <functional>
 #include <memory>
 
 #include "openssl/bio.h"
+#include "openssl/evp.h"
 
 #include "staticlib/config.hpp"
-
 #include "staticlib/io.hpp"
+#include "staticlib/support.hpp"
+
+#include "staticlib/crypto/crypto_exception.hpp"
 
 namespace staticlib {
 namespace crypto {
@@ -47,6 +51,10 @@ class base64_sink {
      * Destination sink
      */
     Sink sink;
+    /**
+     * Read buffer
+     */
+    std::array<char, buffer_size> buf;
     /**
      * OpenSSL machinery
      */
@@ -63,14 +71,31 @@ public:
      */
     explicit base64_sink(Sink&& sink) :
     sink(std::move(sink)),
-    b64(BIO_new(BIO_f_base64()), [](BIO* bio) { BIO_free(bio) }),
-    bsrc(BIO_new(BIO_s_bio()), [](BIO* bio) { BIO_free(bio) }),
-    bfilter(BIO_new(BIO_s_bio()), [](BIO* bio) { BIO_free(bio) }) {
+    b64(BIO_new(BIO_f_base64()), [](BIO* bio) { BIO_free(bio); }),
+    bsrc(BIO_new(BIO_s_bio()), [](BIO* bio) { BIO_free(bio); }),
+    bsink(BIO_new(BIO_s_bio()), [](BIO* bio) { BIO_free(bio); }) {
+        if (nullptr == b64.get()) throw crypto_exception(TRACEMSG(
+                "'BIO_new(BIO_f_base64)' error"));
+        if (nullptr == bsrc.get() || nullptr == bsink.get()) throw crypto_exception(TRACEMSG(
+                "'BIO_new(BIO_s_bio)' error"));
         // base64 format
-        BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
-        // source buf
-        int err_src_buf_size = BIO_set_write_buf_size(src, 4096);
-        slassert(1 == err_src_buf_size);
+        BIO_set_flags(b64.get(), BIO_FLAGS_BASE64_NO_NL);
+        // source
+        int err_src_buf_size = BIO_set_write_buf_size(bsrc.get(), buffer_size);
+        if(1 != err_src_buf_size) throw crypto_exception(TRACEMSG(
+                "'BIO_set_write_buf_size' error, size: [" + sl::support::to_string(buffer_size) + "]"));
+        // sink
+        int err_sink_buf_size = BIO_set_write_buf_size(bsink.get(), buffer_size);
+        if(1 != err_sink_buf_size) throw crypto_exception(TRACEMSG(
+                "'BIO_set_write_buf_size' error, size: [" + sl::support::to_string(buffer_size) + "]"));
+        // chain
+        BIO* pushed = BIO_push(b64.get(), bsrc.get());
+        if(pushed != b64.get()) throw crypto_exception(TRACEMSG(
+                "'BIO_push' error"));
+        // pair, BIO_s_mem may be used instead
+        int err_pair = BIO_make_bio_pair(bsrc.get(), bsink.get());
+        if (1 != err_pair) throw crypto_exception(TRACEMSG(
+                "'BIO_make_bio_pair' error, code: [" + sl::support::to_string(err_pair) + "]"));
     }
 
     /**
@@ -95,7 +120,10 @@ public:
      */
     base64_sink(base64_sink&& other) STATICLIB_NOEXCEPT :
     sink(std::move(other.sink)),
-    hbuf(std::move(other.hbuf)) { }
+    buf(std::move(other.buf)),
+    b64(std::move(other.b64)),
+    bsrc(std::move(other.bsrc)),
+    bsink(std::move(other.bsink)) { }
 
     /**
      * Move assignment operator
@@ -105,35 +133,77 @@ public:
      */
     base64_sink& operator=(base64_sink&& other) STATICLIB_NOEXCEPT {
         sink = std::move(other.sink);
-        hbuf = std::move(other.hbuf);
+        buf = std::move(other.buf);
+        b64 = std::move(other.b64);
+        bsrc = std::move(other.bsrc);
+        bsink = std::move(other.bsink);
         return *this;
     }
 
     /**
-     * Hex encoding write implementation
+     * Destructor, flushes the stream before destroy
+     */
+    ~base64_sink() STATICLIB_NOEXCEPT {
+        try {
+            flush();
+        } catch(...) {
+            // ignore
+        }
+    }
+
+    /**
+     * Base64 encoding write implementation
      * 
      * @param span buffer span
      * @return number of bytes processed
      */
-    std::streamsize write(span<const char> span) {
-        for (size_t i = 0; i < span.size(); i++) {
-            char ch = span.data()[i];
-            // http://stackoverflow.com/a/18025541/314015
-            unsigned char uch = static_cast<unsigned char>(ch);
-            hbuf[0] = base64_sink_detail::symbols[static_cast<size_t>(uch >> 4)];
-            hbuf[1] = base64_sink_detail::symbols[static_cast<size_t>(uch & 0x0f)];
-            sl::io::write_all(sink, {hbuf.data(), hbuf.size()});
+    std::streamsize write(sl::io::span<const char> span) {
+        size_t written = 0;
+        while (written < span.size()) {
+            // write
+            auto allowed = BIO_get_write_guarantee(b64.get());
+            if (allowed <= 0) throw crypto_exception(TRACEMSG(
+                    "'BIO_get_write_guarantee' write buffer overflow," +
+                    " allowed: [" + sl::support::to_string(allowed) + "]"));
+            auto uallowed = static_cast<size_t>(allowed);
+            auto avail = span.size() - written;
+            size_t to_write = avail <= uallowed ? avail : uallowed;
+            auto wr = BIO_write(b64.get(), span.data() + written, static_cast<int>(to_write));
+            if (wr <= 0) throw crypto_exception(TRACEMSG(
+                    "'BIO_write' error, to_write: [" + sl::support::to_string(to_write) + "]," +
+                    " written: [" + sl::support::to_string(wr) + "]"));
+            written += static_cast<size_t>(wr);
+            // read and write to sink
+            int read = 0;
+            while ((read = (BIO_read(bsink.get(), buf.data(), buf.size()))) > 0) {
+                sl::io::write_all(sink, {buf.data(), static_cast<size_t>(read)});
+            }
+            if (read < -1) throw crypto_exception(TRACEMSG(
+                    "'BIO_read' error, return: [" + sl::support::to_string(read) + "]"));
         }
         return span.size_signed();
     }
 
     /**
-     * Flushes destination sink
+     * Flushes Base64 encoder and a destination sink
      * 
      * @return number of bytes flushed
      */
     std::streamsize flush() {
-        return sink.flush();
+        auto err = BIO_flush(b64.get());
+        if (1 != err) throw crypto_exception(TRACEMSG(
+                "'BIO_flush' error, code: [" + sl::support::to_string(err) + "]"));
+        // read and write to sink
+        std::streamsize written = 0;
+        int read = 0;
+        while ((read = (BIO_read(bsink.get(), buf.data(), buf.size()))) > 0) {
+            written += read;
+            sl::io::write_all(sink, {buf.data(), static_cast<size_t>(read)});
+        }
+        if (read < -1) throw crypto_exception(TRACEMSG(
+                "'BIO_read' error, return: [" + sl::support::to_string(read) + "]"));
+        sink.flush();
+        return written;
     }
 
     /**
@@ -148,7 +218,7 @@ public:
 };
 
 /**
- * Factory function for creating hex sinks,
+ * Factory function for creating Base64 sinks,
  * created sink wrapper will own specified sink
  * 
  * @param sink destination sink
@@ -161,15 +231,15 @@ base64_sink<Sink> make_base64_sink(Sink&& sink) {
 }
 
 /**
- * Factory function for creating hex sinks,
+ * Factory function for creating Base64 sinks,
  * created sink wrapper will NOT own specified sink
  * 
  * @param sink destination sink
  * @return counting sink
  */
 template <typename Sink>
-base64_sink<reference_sink<Sink>> make_base64_sink(Sink& sink) {
-    return base64_sink<reference_sink<Sink>>(make_reference_sink(sink));
+base64_sink<sl::io::reference_sink<Sink>> make_base64_sink(Sink& sink) {
+    return base64_sink<sl::io::reference_sink<Sink>>(sl::io::make_reference_sink(sink));
 }
 
 } // namespace

@@ -23,10 +23,12 @@
 
 #include <iostream>
 
+#include "openssl/bio.h"
+#include "openssl/evp.h"
+
 #include "staticlib/config/assert.hpp"
 
 void test_base64() {
-    /*
     BIO* b64 = BIO_new(BIO_f_base64());
     BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
 
@@ -68,13 +70,52 @@ void test_base64() {
     slassert(1 == err_destroy);
     BIO_free(src);
     BIO_free(sink);
-    */
+}
+
+void test_decode() {
+    BIO* b64 = BIO_new(BIO_f_base64());
+    BIO_set_flags(b64, BIO_FLAGS_BASE64_NO_NL);
+
+    BIO* src = BIO_new(BIO_s_bio());
+    int err_src_buf_size = BIO_set_write_buf_size(src, 4096);
+    slassert(1 == err_src_buf_size);
+
+    BIO* sink = BIO_new(BIO_s_bio());
+    int err_sink_buf_size = BIO_set_write_buf_size(sink, 4096);
+    slassert(1 == err_sink_buf_size);
+
+    BIO* pushed_bio = BIO_push(b64, sink);
+    slassert(pushed_bio == b64);
+
+    int err_make_pair = BIO_make_bio_pair(src, sink);
+    slassert(1 == err_make_pair);
+
+    auto data = std::string("Zm9vYmFyCg==");
+    auto written = BIO_write(src, data.data(), data.size());
+    std::cout << written << std::endl;
+    auto err_flush = BIO_flush(src);
+    slassert(1 == err_flush);
+    auto err_flush1 = BIO_flush(sink);
+    slassert(1 == err_flush1);
+
+    auto dest = std::string();
+    dest.resize(1024);
+    auto read = BIO_read(b64, std::addressof(dest.front()), dest.size());
+    std::cout << read << std::endl;
+    dest.resize(read);
+    std::cout << read << std::endl;
+    std::cout << "[" << dest << "]" << std::endl;
+
+    BIO_free(src);
+    BIO_free(b64);
+    BIO_free(sink);
 }
 
 int main() {
     try {
         //test_hex();
-        test_base64();
+//        test_base64();
+        test_decode();
     } catch (const std::exception& e) {
         std::cout << e.what() << std::endl;
         return 1;
