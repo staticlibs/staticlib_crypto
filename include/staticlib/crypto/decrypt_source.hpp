@@ -178,10 +178,10 @@ public:
             if (1 != err_flush) throw crypto_exception(TRACEMSG(
                     "'BIO_flush' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
             unsigned char eof = static_cast<unsigned char>(-1);
-            auto written = BIO_write(bsrc.get(), std::addressof(eof), 1);
-            if (written <= 0) throw crypto_exception(TRACEMSG(
+            auto written_flushed = BIO_write(bsrc.get(), std::addressof(eof), 1);
+            if (written_flushed <= 0) throw crypto_exception(TRACEMSG(
                     "'BIO_write' eof error, to_write: [" + sl::support::to_string(read_from_src) + "]," +
-                    " written: [" + sl::support::to_string(written) + "]," +
+                    " written: [" + sl::support::to_string(written_flushed) + "]," +
                     " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
             // read and return
             int read_flushed = BIO_read(decrypter.get(), span.data(), static_cast<int>(span.size_signed()));
@@ -205,10 +205,10 @@ public:
             if (1 != err_flush) throw crypto_exception(TRACEMSG(
                     "'BIO_flush' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
             unsigned char eof = static_cast<unsigned char>(-1);
-            auto written = BIO_write(bsrc.get(), std::addressof(eof), 1);
-            if (written <= 0) throw crypto_exception(TRACEMSG(
+            auto written_flushed = BIO_write(bsrc.get(), std::addressof(eof), 1);
+            if (written_flushed <= 0) throw crypto_exception(TRACEMSG(
                     "'BIO_write' eof error, to_write: [" + sl::support::to_string(read_from_src) + "]," +
-                    " written: [" + sl::support::to_string(written) + "]," +
+                    " written: [" + sl::support::to_string(written_flushed) + "]," +
                     " code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         }
         // read and return

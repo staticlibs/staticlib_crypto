@@ -153,8 +153,8 @@ public:
             auto dest = sl::io::string_sink();
             {
                 auto src = sl::io::array_source(reinterpret_cast<const char*>(buf.data()), buf.size());
-                auto sink = sl::io::make_hex_sink(dest);
-                sl::io::copy_all(src, sink);
+                auto hex = sl::io::make_hex_sink(dest);
+                sl::io::copy_all(src, hex);
             }
             hash = std::move(dest.get_string());
         }
