@@ -149,10 +149,12 @@ public:
             auto err = SHA256_Final(buf.data(), ctx.get());
             if (1 != err) throw crypto_exception(TRACEMSG(
                     "'SHA256_Final' error, code: [" + sl::support::to_string(err) + "]"));
-            auto src = sl::io::array_source(reinterpret_cast<const char*>(buf.data()), buf.size());
             auto dest = sl::io::string_sink();
-            auto sink = sl::io::make_hex_sink(dest);
-            sl::io::copy_all(src, sink);
+            {
+                auto src = sl::io::array_source(reinterpret_cast<const char*>(buf.data()), buf.size());
+                auto sink = sl::io::make_hex_sink(dest);
+                sl::io::copy_all(src, sink);
+            }
             hash = std::move(dest.get_string());
         }
         return hash;

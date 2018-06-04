@@ -149,10 +149,12 @@ public:
             auto err = SHA1_Final(buf.data(), ctx.get());
             if (1 != err) throw crypto_exception(TRACEMSG(
                     "'SHA1_Final' error, code: [" + sl::support::to_string(err) + "]"));
-            auto src = sl::io::array_source(reinterpret_cast<const char*>(buf.data()), buf.size());
             auto dest = sl::io::string_sink();
-            auto sink = sl::io::make_hex_sink(dest);
-            sl::io::copy_all(src, sink);
+            {
+                auto src = sl::io::array_source(reinterpret_cast<const char*>(buf.data()), buf.size());
+                auto sink = sl::io::make_hex_sink(dest);
+                sl::io::copy_all(src, sink);
+            }
             hash = std::move(dest.get_string());
         }
         return hash;
@@ -169,11 +171,11 @@ public:
 };
 
 /**
- * Factory function for creating counting sinks,
+ * Factory function for creating SHA-1 sinks,
  * created sink wrapper will own specified sink
  * 
  * @param sink destination sink
- * @return counting sink
+ * @return SHA-1 sink
  */
 template <typename Sink,
 class = typename std::enable_if<!std::is_lvalue_reference<Sink>::value>::type>
@@ -182,11 +184,11 @@ sha1_sink<Sink> make_sha1_sink(Sink&& sink) {
 }
 
 /**
- * Factory function for creating counting sinks,
+ * Factory function for creating SHA-1 sinks,
  * created sink wrapper will NOT own specified sink
  * 
  * @param sink destination sink
- * @return counting sink
+ * @return SHA-1 sink
  */
 template <typename Sink>
 sha1_sink<staticlib::io::reference_sink<Sink>> make_sha1_sink(Sink& sink) {

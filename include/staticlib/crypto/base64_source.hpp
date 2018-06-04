@@ -163,7 +163,15 @@ public:
         size_t to_decode = uallowed <= buf.size() ? uallowed : buf.size();
         size_t read_from_src = sl::io::read_all(src, {buf.data(), to_decode});
         if (0 == read_from_src) {
-            return std::char_traits<char>::eof();
+            // source exhausted
+            auto err_flush = BIO_flush(bsrc.get());
+            if (1 != err_flush) throw crypto_exception(TRACEMSG(
+                    "'BIO_flush' error, code: [" + sl::support::to_string(err_flush) + "]"));
+            // read and return
+            int read_flushed = BIO_read(b64.get(), span.data(), span.size());
+            if (read_flushed < -1) throw crypto_exception(TRACEMSG(
+                    "'BIO_read' error, return: [" + sl::support::to_string(read_flushed) + "]"));
+            return read_flushed >= 0 ? static_cast<size_t>(read_flushed) : std::char_traits<char>::eof();
         }
         auto written = BIO_write(bsrc.get(), buf.data(), static_cast<int>(read_from_src));
         if (written <= 0) throw crypto_exception(TRACEMSG(
@@ -197,7 +205,7 @@ public:
  * created source wrapper will own specified source
  * 
  * @param source input source
- * @return SHA-1 source
+ * @return Base64 source
  */
 template <typename Source,
 class = typename std::enable_if<!std::is_lvalue_reference<Source>::value>::type>
@@ -210,7 +218,7 @@ base64_source<Source> make_base64_source(Source&& source) {
  * created source wrapper will NOT own specified source
  * 
  * @param source input source
- * @return SHA-1 source
+ * @return Base64 source
  */
 template <typename Source>
 base64_source<staticlib::io::reference_source<Source>> make_base64_source(Source& source) {

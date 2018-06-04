@@ -222,7 +222,7 @@ public:
  * created sink wrapper will own specified sink
  * 
  * @param sink destination sink
- * @return counting sink
+ * @return Base64 sink
  */
 template <typename Sink,
         class = typename std::enable_if<!std::is_lvalue_reference<Sink>::value>::type>
@@ -235,7 +235,7 @@ base64_sink<Sink> make_base64_sink(Sink&& sink) {
  * created sink wrapper will NOT own specified sink
  * 
  * @param sink destination sink
- * @return counting sink
+ * @return Base64 sink
  */
 template <typename Sink>
 base64_sink<sl::io::reference_sink<Sink>> make_base64_sink(Sink& sink) {
