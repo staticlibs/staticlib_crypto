@@ -63,7 +63,7 @@ class digest_verify_source {
     /**
      * Signature valid flag
      */
-    sl::support::tribool signature_valid = sl::support::indeterminate;
+    sl::support::tribool signature_valid;
 
 public:
 
@@ -76,7 +76,8 @@ public:
     digest_verify_source(Source&& src, const std::string& cert_path, const std::string& signature_hex,
             const std::string& digest_name = "SHA256") :
     src(std::move(src)),
-    signature(sl::io::string_from_hex(signature_hex)) {
+    signature(sl::io::string_from_hex(signature_hex)),
+    signature_valid(sl::support::indeterminate){
         ctx = std::unique_ptr<EVP_MD_CTX, std::function<void(EVP_MD_CTX*)>>(EVP_MD_CTX_create(),
                 [] (EVP_MD_CTX* ctx) {
                     EVP_MD_CTX_destroy(ctx);
