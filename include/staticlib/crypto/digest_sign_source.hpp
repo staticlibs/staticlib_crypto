@@ -188,7 +188,7 @@ public:
                     "'EVP_DigestSignFinal' error, code: [" + sl::support::to_string(ERR_get_error()) + "]," +
                     " req: [" + sl::support::to_string(req) + "]," +
                     " slen: [" + sl::support::to_string(slen) + "]"));
-            signature = sl::io::string_to_hex(sig);
+            signature = sl::io::hex_from_string(sig);
         }
         return signature;
     }
