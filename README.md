@@ -21,6 +21,12 @@ This project is released under the [Apache License 2.0](http://www.apache.org/li
 Changelog
 ---------
 
+**2020-02-09**
+
+ * version 1.1.0
+ * drop `decrypt_source`
+ * use `crypt_sink` for both encryption and decryption
+
 **2018-06-04**
 
  * version 1.0.0

@@ -15,14 +15,14 @@
  */
 
 /* 
- * File:   encrypt_sink.hpp
+ * File:   crypt_sink.hpp
  * Author: alex
  *
  * Created on June 3, 2018, 4:59 PM
  */
 
-#ifndef STATICLIB_CRYPTO_ENCRYPT_SINK_HPP
-#define STATICLIB_CRYPTO_ENCRYPT_SINK_HPP
+#ifndef STATICLIB_CRYPTO_CRYPT_SINK_HPP
+#define STATICLIB_CRYPTO_CRYPT_SINK_HPP
 
 #include <array>
 #include <ios>
@@ -43,11 +43,11 @@ namespace staticlib {
 namespace crypto {
 
 /**
- * Sink wrapper that encodes data into Hexadecimal,
+ * Sink wrapper that encrypts or decrypts data with a specified cipher,
  * should be used in conjunction with buffered sink.
  */
 template<typename Sink, size_t buffer_size=4096>
-class encrypt_sink {
+class crypt_sink {
     /**
      * Destination sink
      */
@@ -70,7 +70,8 @@ public:
      * 
      * @param sink destination sink
      */
-    encrypt_sink(Sink&& sink, const EVP_CIPHER* cipher, const std::string& key, const std::string& iv) :
+    crypt_sink(Sink&& sink, const EVP_CIPHER* cipher, const std::string& key, const std::string& iv,
+            bool encrypt) :
     sink(std::move(sink)),
     encrypter(BIO_new(BIO_f_cipher()), [](BIO* bio) { BIO_free(bio); }),
     bsrc(BIO_new(BIO_s_bio()), [](BIO* bio) { BIO_free(bio); }),
@@ -80,7 +81,7 @@ public:
         if (nullptr == bsrc.get() || nullptr == bsink.get()) throw crypto_exception(TRACEMSG(
                 "'BIO_new(BIO_s_bio)' error, code: [" + sl::support::to_string(ERR_get_error()) + "]"));
         BIO_set_cipher(encrypter.get(), cipher, reinterpret_cast<const unsigned char*>(key.c_str()),
-                reinterpret_cast<const unsigned char*>(iv.c_str()), 1 /* encrypt */);
+                reinterpret_cast<const unsigned char*>(iv.c_str()), encrypt ? 1 : 0);
         EVP_CIPHER_CTX* pctx = nullptr;
         auto err_ctx = BIO_get_cipher_ctx(encrypter.get(), std::addressof(pctx));
         if (1 != err_ctx || nullptr == pctx) throw crypto_exception(TRACEMSG(
@@ -110,7 +111,7 @@ public:
      * 
      * @param other instance
      */
-    encrypt_sink(const encrypt_sink&) = delete;
+    crypt_sink(const crypt_sink&) = delete;
 
     /**
      * Deleted copy assignment operator
@@ -118,14 +119,14 @@ public:
      * @param other instance
      * @return this instance 
      */
-    encrypt_sink& operator=(const encrypt_sink&) = delete;
+    crypt_sink& operator=(const crypt_sink&) = delete;
 
     /**
      * Move constructor
      * 
      * @param other other instance
      */
-    encrypt_sink(encrypt_sink&& other) STATICLIB_NOEXCEPT :
+    crypt_sink(crypt_sink&& other) STATICLIB_NOEXCEPT :
     sink(std::move(other.sink)),
     buf(std::move(other.buf)),
     encrypter(std::move(other.encrypter)),
@@ -138,7 +139,7 @@ public:
      * @param other other instance
      * @return this instance
      */
-    encrypt_sink& operator=(encrypt_sink&& other) STATICLIB_NOEXCEPT {
+    crypt_sink& operator=(crypt_sink&& other) STATICLIB_NOEXCEPT {
         sink = std::move(other.sink);
         buf = std::move(other.buf);
         encrypter = std::move(other.encrypter);
@@ -150,7 +151,7 @@ public:
     /**
      * Destructor, flushes the stream before destroy
      */
-    ~encrypt_sink() STATICLIB_NOEXCEPT {
+    ~crypt_sink() STATICLIB_NOEXCEPT {
         try {
             flush();
         } catch(...) {
@@ -237,9 +238,9 @@ public:
  */
 template <typename Sink,
         class = typename std::enable_if<!std::is_lvalue_reference<Sink>::value>::type>
-encrypt_sink<Sink> make_encrypt_sink(Sink&& sink, const EVP_CIPHER* cipher,
+crypt_sink<Sink> make_encrypt_sink(Sink&& sink, const EVP_CIPHER* cipher,
         const std::string& key, const std::string& iv) {
-    return encrypt_sink<Sink>(std::move(sink), cipher, key, iv);
+    return crypt_sink<Sink>(std::move(sink), cipher, key, iv, true);
 }
 
 /**
@@ -250,13 +251,42 @@ encrypt_sink<Sink> make_encrypt_sink(Sink&& sink, const EVP_CIPHER* cipher,
  * @return encrypt sink
  */
 template <typename Sink>
-encrypt_sink<sl::io::reference_sink<Sink>> make_encrypt_sink(Sink& sink, const EVP_CIPHER* cipher,
+crypt_sink<sl::io::reference_sink<Sink>> make_encrypt_sink(Sink& sink, const EVP_CIPHER* cipher,
         const std::string& key, const std::string& iv) {
-    return encrypt_sink<sl::io::reference_sink<Sink>>(sl::io::make_reference_sink(sink), cipher, key, iv);
+    return crypt_sink<sl::io::reference_sink<Sink>>(
+            sl::io::make_reference_sink(sink), cipher, key, iv, true);
+}
+
+/**
+ * Factory function for creating decrypt sinks,
+ * created sink wrapper will own specified sink
+ * 
+ * @param sink destination sink
+ * @return encrypt sink
+ */
+template <typename Sink,
+        class = typename std::enable_if<!std::is_lvalue_reference<Sink>::value>::type>
+crypt_sink<Sink> make_decrypt_sink(Sink&& sink, const EVP_CIPHER* cipher,
+        const std::string& key, const std::string& iv) {
+    return crypt_sink<Sink>(std::move(sink), cipher, key, iv, false);
+}
+
+/**
+ * Factory function for creating decrypt sinks,
+ * created sink wrapper will NOT own specified sink
+ * 
+ * @param sink destination sink
+ * @return encrypt sink
+ */
+template <typename Sink>
+crypt_sink<sl::io::reference_sink<Sink>> make_decrypt_sink(Sink& sink, const EVP_CIPHER* cipher,
+        const std::string& key, const std::string& iv) {
+    return crypt_sink<sl::io::reference_sink<Sink>>(
+            sl::io::make_reference_sink(sink), cipher, key, iv, false);
 }
 
 } // namespace
 }
 
-#endif /* STATICLIB_CRYPTO_ENCRYPT_SINK_HPP */
+#endif /* STATICLIB_CRYPTO_CRYPT_SINK_HPP */
 
